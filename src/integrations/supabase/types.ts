@@ -14,16 +14,212 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      report_status_history: {
+        Row: {
+          changed_by: string | null
+          created_at: string
+          id: string
+          note: string | null
+          report_id: string
+          status: Database["public"]["Enums"]["report_status"]
+        }
+        Insert: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          note?: string | null
+          report_id: string
+          status: Database["public"]["Enums"]["report_status"]
+        }
+        Update: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          note?: string | null
+          report_id?: string
+          status?: Database["public"]["Enums"]["report_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_status_history_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      report_votes: {
+        Row: {
+          created_at: string
+          id: string
+          report_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          report_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          report_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_votes_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reports: {
+        Row: {
+          ai_analysis: string | null
+          ai_severity: Database["public"]["Enums"]["pothole_severity"] | null
+          area: string | null
+          complaint_id: string
+          created_at: string
+          description: string
+          id: string
+          image_urls: string[]
+          is_emergency: boolean
+          landmark: string | null
+          latitude: number
+          longitude: number
+          priority_score: number
+          reporter_name: string | null
+          road_name: string | null
+          severity: Database["public"]["Enums"]["pothole_severity"]
+          status: Database["public"]["Enums"]["report_status"]
+          updated_at: string
+          upvotes: number
+          user_id: string | null
+          ward: string | null
+        }
+        Insert: {
+          ai_analysis?: string | null
+          ai_severity?: Database["public"]["Enums"]["pothole_severity"] | null
+          area?: string | null
+          complaint_id?: string
+          created_at?: string
+          description: string
+          id?: string
+          image_urls?: string[]
+          is_emergency?: boolean
+          landmark?: string | null
+          latitude: number
+          longitude: number
+          priority_score?: number
+          reporter_name?: string | null
+          road_name?: string | null
+          severity?: Database["public"]["Enums"]["pothole_severity"]
+          status?: Database["public"]["Enums"]["report_status"]
+          updated_at?: string
+          upvotes?: number
+          user_id?: string | null
+          ward?: string | null
+        }
+        Update: {
+          ai_analysis?: string | null
+          ai_severity?: Database["public"]["Enums"]["pothole_severity"] | null
+          area?: string | null
+          complaint_id?: string
+          created_at?: string
+          description?: string
+          id?: string
+          image_urls?: string[]
+          is_emergency?: boolean
+          landmark?: string | null
+          latitude?: number
+          longitude?: number
+          priority_score?: number
+          reporter_name?: string | null
+          road_name?: string | null
+          severity?: Database["public"]["Enums"]["pothole_severity"]
+          status?: Database["public"]["Enums"]["report_status"]
+          updated_at?: string
+          upvotes?: number
+          user_id?: string | null
+          ward?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      compute_priority: {
+        Args: {
+          _emergency: boolean
+          _severity: Database["public"]["Enums"]["pothole_severity"]
+          _upvotes: number
+        }
+        Returns: number
+      }
+      gen_complaint_id: { Args: never; Returns: string }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "citizen" | "officer" | "admin"
+      pothole_severity: "minor" | "moderate" | "severe" | "dangerous"
+      report_status:
+        | "submitted"
+        | "under_review"
+        | "assigned"
+        | "in_progress"
+        | "resolved"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +346,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["citizen", "officer", "admin"],
+      pothole_severity: ["minor", "moderate", "severe", "dangerous"],
+      report_status: [
+        "submitted",
+        "under_review",
+        "assigned",
+        "in_progress",
+        "resolved",
+      ],
+    },
   },
 } as const
