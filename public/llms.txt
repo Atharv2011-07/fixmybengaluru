@@ -8,4 +8,3 @@
 
 ## Optional
 - [Sitemap](/sitemap.xml): XML sitemap of public pages.
-EOF
