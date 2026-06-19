@@ -81,7 +81,7 @@ function Index() {
       <AppHeader />
 
       {/* Hero stats */}
-      <section className="border-b border-border/70 bg-[var(--gradient-hero)] text-primary-foreground">
+      <section className="border-b border-border/70 bg-gradient-hero text-primary-foreground">
         <div className="mx-auto max-w-6xl px-4 py-6">
           <h1 className="font-display text-2xl font-bold sm:text-3xl">
             Fix Bengaluru&apos;s roads, together

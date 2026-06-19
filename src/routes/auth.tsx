@@ -80,7 +80,7 @@ function AuthPage() {
   };
 
   return (
-    <div className="grid min-h-screen place-items-center bg-[var(--gradient-hero)] px-4 py-10">
+    <div className="grid min-h-screen place-items-center bg-gradient-hero px-4 py-10">
       <div className="w-full max-w-sm">
         <Link to="/" className="mb-6 inline-flex items-center gap-1.5 text-sm text-primary-foreground/80 hover:text-primary-foreground">
           <ArrowLeft className="size-4" /> Back to map
