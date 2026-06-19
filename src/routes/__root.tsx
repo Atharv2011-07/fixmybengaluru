@@ -98,6 +98,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Pothole Bengaluru — Report & Track Potholes" },
+      { name: "description", content: "Bengaluru Road Watch lets citizens report potholes and track their repair status." },
+      { property: "og:description", content: "Bengaluru Road Watch lets citizens report potholes and track their repair status." },
+      { name: "twitter:description", content: "Bengaluru Road Watch lets citizens report potholes and track their repair status." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c9170764-57b6-451c-bc08-6c1a43a05efe/id-preview-8ba053ed--8d2a0812-59c5-410a-b586-2e66019590bf.lovable.app-1781894835852.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c9170764-57b6-451c-bc08-6c1a43a05efe/id-preview-8ba053ed--8d2a0812-59c5-410a-b586-2e66019590bf.lovable.app-1781894835852.png" },
     ],
     links: [
       {
