@@ -1,0 +1,11 @@
+# Pothole Bengaluru
+
+> Crowdsourced pothole reporting and resolution tracking for Bengaluru. Citizens report potholes to BBMP, track repair status on a live city map, and prioritize fixes with AI severity analysis and community votes.
+
+## Pages
+- [Live pothole map](/): Interactive map of all reported potholes across Bengaluru with filters by area, ward, status, and severity.
+- [Report a pothole](/report): Submit a pothole with photos, AI severity analysis, GPS location, and details. Guest reporting supported.
+
+## Optional
+- [Sitemap](/sitemap.xml): XML sitemap of public pages.
+EOF
