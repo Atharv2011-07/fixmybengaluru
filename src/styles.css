@@ -186,6 +186,12 @@
     box-shadow: var(--shadow-card);
     border: 1px solid var(--color-border);
   }
+  .bg-gradient-hero {
+    background-image: var(--gradient-hero);
+  }
+  .bg-gradient-amber {
+    background-image: var(--gradient-amber);
+  }
 }
 
 /* Leaflet runtime styling so map markers/popups match the design system. */
