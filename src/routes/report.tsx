@@ -94,6 +94,10 @@ function ReportPage() {
     try {
       const result = await analyze({ data: { imageDataUrl: dataUrl } });
       setAi(result);
+      if (!result.isPothole) {
+        toast.error("Invalid image — no pothole detected. Please upload a clear photo of a pothole.");
+        return;
+      }
       setSeverity(result.severity);
       if (result.severity === "dangerous") setEmergency(true);
       toast.success("AI analysis complete");
@@ -135,6 +139,9 @@ function ReportPage() {
     if (!parsed.success) return toast.error(parsed.error.issues[0].message);
     if (!coords) return toast.error("Please set the pothole location on the map");
     if (!user && !reporterName.trim()) return toast.error("Please add your name (or sign in)");
+    if (files.length && ai && !ai.isPothole) {
+      return toast.error("Invalid image — the uploaded photo isn't a pothole. Remove it or upload a valid pothole image.");
+    }
 
     setSubmitting(true);
     try {
