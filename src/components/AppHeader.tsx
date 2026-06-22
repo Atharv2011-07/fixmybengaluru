@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { MapPin, Plus, LogOut, User as UserIcon } from "lucide-react";
+import { MapPin, Plus, LogOut, User as UserIcon, ShieldAlert } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/useAuth";
+import { useIsAdmin } from "@/lib/useIsAdmin";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
@@ -13,6 +14,7 @@ import {
 
 export function AppHeader() {
   const { user, isAuthenticated } = useAuth();
+  const { isAdmin } = useIsAdmin();
   const navigate = useNavigate();
 
   const signOut = async () => {
@@ -35,6 +37,14 @@ export function AppHeader() {
 
         <nav className="flex items-center gap-1.5">
           <ThemeToggle />
+          {isAdmin && (
+            <Button asChild variant="outline" size="sm" className="gap-1.5">
+              <Link to="/developer">
+                <ShieldAlert className="size-4" />
+                <span className="hidden sm:inline">Developer</span>
+              </Link>
+            </Button>
+          )}
           <Button asChild variant="default" size="sm" className="gap-1.5">
             <Link to="/report">
               <Plus className="size-4" />

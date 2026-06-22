@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ReportRouteImport } from './routes/report'
+import { Route as DeveloperRouteImport } from './routes/developer'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ReportsIdRouteImport } from './routes/reports.$id'
@@ -23,6 +24,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const ReportRoute = ReportRouteImport.update({
   id: '/report',
   path: '/report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DeveloperRoute = DeveloperRouteImport.update({
+  id: '/developer',
+  path: '/developer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -44,6 +50,7 @@ const ReportsIdRoute = ReportsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/developer': typeof DeveloperRoute
   '/report': typeof ReportRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/reports/$id': typeof ReportsIdRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/developer': typeof DeveloperRoute
   '/report': typeof ReportRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/reports/$id': typeof ReportsIdRoute
@@ -59,21 +67,36 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/developer': typeof DeveloperRoute
   '/report': typeof ReportRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/reports/$id': typeof ReportsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/report' | '/sitemap.xml' | '/reports/$id'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/developer'
+    | '/report'
+    | '/sitemap.xml'
+    | '/reports/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/report' | '/sitemap.xml' | '/reports/$id'
-  id: '__root__' | '/' | '/auth' | '/report' | '/sitemap.xml' | '/reports/$id'
+  to: '/' | '/auth' | '/developer' | '/report' | '/sitemap.xml' | '/reports/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/developer'
+    | '/report'
+    | '/sitemap.xml'
+    | '/reports/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
+  DeveloperRoute: typeof DeveloperRoute
   ReportRoute: typeof ReportRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ReportsIdRoute: typeof ReportsIdRoute
@@ -93,6 +116,13 @@ declare module '@tanstack/react-router' {
       path: '/report'
       fullPath: '/report'
       preLoaderRoute: typeof ReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/developer': {
+      id: '/developer'
+      path: '/developer'
+      fullPath: '/developer'
+      preLoaderRoute: typeof DeveloperRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -122,6 +152,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
+  DeveloperRoute: DeveloperRoute,
   ReportRoute: ReportRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ReportsIdRoute: ReportsIdRoute,
