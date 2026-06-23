@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ReportRouteImport } from './routes/report'
+import { Route as HallOfShameRouteImport } from './routes/hall-of-shame'
 import { Route as DeveloperRouteImport } from './routes/developer'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
@@ -24,6 +25,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const ReportRoute = ReportRouteImport.update({
   id: '/report',
   path: '/report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HallOfShameRoute = HallOfShameRouteImport.update({
+  id: '/hall-of-shame',
+  path: '/hall-of-shame',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DeveloperRoute = DeveloperRouteImport.update({
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/developer': typeof DeveloperRoute
+  '/hall-of-shame': typeof HallOfShameRoute
   '/report': typeof ReportRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/reports/$id': typeof ReportsIdRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/developer': typeof DeveloperRoute
+  '/hall-of-shame': typeof HallOfShameRoute
   '/report': typeof ReportRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/reports/$id': typeof ReportsIdRoute
@@ -68,6 +76,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/developer': typeof DeveloperRoute
+  '/hall-of-shame': typeof HallOfShameRoute
   '/report': typeof ReportRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/reports/$id': typeof ReportsIdRoute
@@ -78,16 +87,25 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/developer'
+    | '/hall-of-shame'
     | '/report'
     | '/sitemap.xml'
     | '/reports/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/developer' | '/report' | '/sitemap.xml' | '/reports/$id'
+  to:
+    | '/'
+    | '/auth'
+    | '/developer'
+    | '/hall-of-shame'
+    | '/report'
+    | '/sitemap.xml'
+    | '/reports/$id'
   id:
     | '__root__'
     | '/'
     | '/auth'
     | '/developer'
+    | '/hall-of-shame'
     | '/report'
     | '/sitemap.xml'
     | '/reports/$id'
@@ -97,6 +115,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   DeveloperRoute: typeof DeveloperRoute
+  HallOfShameRoute: typeof HallOfShameRoute
   ReportRoute: typeof ReportRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ReportsIdRoute: typeof ReportsIdRoute
@@ -116,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/report'
       fullPath: '/report'
       preLoaderRoute: typeof ReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hall-of-shame': {
+      id: '/hall-of-shame'
+      path: '/hall-of-shame'
+      fullPath: '/hall-of-shame'
+      preLoaderRoute: typeof HallOfShameRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/developer': {
@@ -153,6 +179,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   DeveloperRoute: DeveloperRoute,
+  HallOfShameRoute: HallOfShameRoute,
   ReportRoute: ReportRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ReportsIdRoute: ReportsIdRoute,

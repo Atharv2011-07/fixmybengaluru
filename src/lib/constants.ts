@@ -90,3 +90,71 @@ export function markerColor(status: ReportStatus, severity: Severity): string {
   if (severity === "severe") return "oklch(0.7 0.18 50)"; // orange — high
   return "oklch(0.82 0.16 95)"; // yellow — moderate/minor
 }
+
+// ── BBMP WhatsApp integration ────────────────────────────────────────────────
+// BBMP public grievance WhatsApp line. Country code + number, no symbols.
+export const BBMP_WHATSAPP_NUMBER = "918105003700";
+
+export function buildBbmpWhatsAppUrl(report: {
+  complaint_id: string;
+  description: string;
+  severity: Severity;
+  road_name?: string | null;
+  landmark?: string | null;
+  area?: string | null;
+  ward?: string | null;
+  latitude: number;
+  longitude: number;
+  is_emergency?: boolean;
+}): string {
+  const maps = `https://maps.google.com/?q=${report.latitude},${report.longitude}`;
+  const lines = [
+    report.is_emergency ? "🚨 *URGENT POTHOLE REPORT* 🚨" : "*Pothole complaint*",
+    "",
+    `Complaint ID: ${report.complaint_id}`,
+    `Severity: ${SEVERITY_CONFIG[report.severity].label}`,
+    report.road_name ? `Road: ${report.road_name}` : null,
+    report.landmark ? `Landmark: ${report.landmark}` : null,
+    report.area ? `Area: ${report.area}` : null,
+    report.ward ? `Ward: ${report.ward}` : null,
+    "",
+    report.description,
+    "",
+    `Location: ${maps}`,
+    "",
+    "Please take action. Reported via Pothole Bengaluru.",
+  ].filter(Boolean);
+  return `https://wa.me/${BBMP_WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
+}
+
+// ── Hall of Shame: area → constituency / representative ───────────────────────
+// Indicative mapping of localities to their assembly constituency & sitting
+// representative. Used to rank which constituency has the most open potholes.
+export interface ConstituencyInfo {
+  constituency: string;
+  representative: string;
+}
+
+export const AREA_CONSTITUENCY: Record<string, ConstituencyInfo> = {
+  Koramangala: { constituency: "BTM Layout", representative: "Ramalinga Reddy" },
+  Indiranagar: { constituency: "C.V. Raman Nagar", representative: "S. Raghu" },
+  Whitefield: { constituency: "Mahadevapura", representative: "Manjula S. Aravind Limbavali" },
+  Jayanagar: { constituency: "Jayanagar", representative: "C. K. Ramamurthy" },
+  "HSR Layout": { constituency: "Bommanahalli", representative: "M. Satish Reddy" },
+  Marathahalli: { constituency: "Mahadevapura", representative: "Manjula S. Aravind Limbavali" },
+  "Electronic City": { constituency: "Bommanahalli", representative: "M. Satish Reddy" },
+  "BTM Layout": { constituency: "BTM Layout", representative: "Ramalinga Reddy" },
+  Malleshwaram: { constituency: "Malleshwaram", representative: "Dr. C. N. Ashwath Narayan" },
+  Hebbal: { constituency: "Hebbal", representative: "Byrathi Suresh" },
+  Banashankari: { constituency: "Banashankari", representative: "P. R. Ramesh" },
+  Yelahanka: { constituency: "Yelahanka", representative: "S. R. Vishwanath" },
+  Rajajinagar: { constituency: "Rajajinagar", representative: "S. Suresh Kumar" },
+  "JP Nagar": { constituency: "Padmanabhanagar", representative: "R. Ashoka" },
+  Bellandur: { constituency: "Mahadevapura", representative: "Manjula S. Aravind Limbavali" },
+  "Sarjapur Road": { constituency: "Mahadevapura", representative: "Manjula S. Aravind Limbavali" },
+};
+
+export function constituencyForArea(area: string | null | undefined): ConstituencyInfo {
+  if (area && AREA_CONSTITUENCY[area]) return AREA_CONSTITUENCY[area];
+  return { constituency: "Unmapped area", representative: "Representative unknown" };
+}

@@ -5,6 +5,7 @@ import { Filter, Loader2, Plus, Search } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { MapView } from "@/components/map/MapView";
 import { ReportCard } from "@/components/ReportCard";
+import { LocationBanner } from "@/components/LocationBanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -79,6 +80,7 @@ function Index() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <AppHeader />
+      <LocationBanner />
 
       {/* Hero stats */}
       <section className="border-b border-border/70 bg-gradient-hero text-primary-foreground">
