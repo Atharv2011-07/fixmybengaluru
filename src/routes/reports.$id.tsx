@@ -25,6 +25,7 @@ import {
   toggleVote,
 } from "@/lib/reports";
 import { STATUS_CONFIG, STATUS_ORDER } from "@/lib/constants";
+import { buildBbmpWhatsAppUrl } from "@/lib/constants";
 import { useAuth } from "@/lib/useAuth";
 
 export const Route = createFileRoute("/reports/$id")({
@@ -128,6 +129,19 @@ function ReportDetail() {
             {voted ? "Upvoted" : "Upvote"} · {report.upvotes}
           </Button>
         </div>
+
+        <a
+          href={buildBbmpWhatsAppUrl(report)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-3 font-semibold text-white shadow-[var(--shadow-card)] transition hover:brightness-105"
+        >
+          <WhatsAppIcon className="size-5" />
+          Report to BBMP on WhatsApp
+        </a>
+        <p className="mt-1 text-center text-xs text-muted-foreground">
+          Opens WhatsApp with a pre-filled complaint — just hit send.
+        </p>
 
         {imgs.length > 0 && (
           <div className="mt-4 flex gap-2 overflow-x-auto">
