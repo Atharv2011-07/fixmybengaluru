@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Filter, Loader2, Plus, Search } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { MapView } from "@/components/map/MapView";
+import { CityIntro } from "@/components/CityIntro";
 import { ReportCard } from "@/components/ReportCard";
 import { LocationBanner } from "@/components/LocationBanner";
 import { Button } from "@/components/ui/button";
@@ -51,6 +52,11 @@ function Index() {
     queryFn: fetchReports,
   });
 
+  const [intro, setIntro] = useState(false);
+  useEffect(() => {
+    if (!sessionStorage.getItem("pb-intro-seen")) setIntro(true);
+  }, []);
+
   const [search, setSearch] = useState("");
   const [area, setArea] = useState("all");
   const [status, setStatus] = useState("all");
@@ -79,6 +85,14 @@ function Index() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
+      {intro && (
+        <CityIntro
+          onDone={() => {
+            sessionStorage.setItem("pb-intro-seen", "1");
+            setIntro(false);
+          }}
+        />
+      )}
       <AppHeader />
       <LocationBanner />
 
