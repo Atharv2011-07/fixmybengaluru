@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Filter, Loader2, Plus, Search } from "lucide-react";
+import { Filter, Plus, Search } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { MapView } from "@/components/map/MapView";
 import { CityIntro } from "@/components/CityIntro";
