@@ -32,6 +32,8 @@ import { createReport, uploadPotholeImages } from "@/lib/reports";
 import { useAuth } from "@/lib/useAuth";
 import {
   BENGALURU_AREAS,
+  BENGALURU_AREA_COORDS,
+  nearestArea,
   SEVERITY_CONFIG,
   SEVERITY_ORDER,
   type Severity,
@@ -108,6 +110,18 @@ function ReportPage() {
     }
   };
 
+  // Keep the selected area and the map pin in sync.
+  const handleAreaChange = (a: string) => {
+    setArea(a);
+    const c = BENGALURU_AREA_COORDS[a];
+    if (c) setCoords({ lat: c.lat, lng: c.lng });
+  };
+
+  const handlePinChange = (lat: number, lng: number) => {
+    setCoords({ lat, lng });
+    setArea(nearestArea(lat, lng));
+  };
+
   const removeImage = (i: number) => {
     setFiles((f) => f.filter((_, idx) => idx !== i));
     setPreviews((p) => p.filter((_, idx) => idx !== i));
@@ -123,6 +137,7 @@ function ReportPage() {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setArea(nearestArea(pos.coords.latitude, pos.coords.longitude));
         setLocating(false);
         toast.success("Location captured");
       },
@@ -272,7 +287,7 @@ function ReportPage() {
             </div>
             <div className="space-y-1.5">
               <Label>Area</Label>
-              <Select value={area} onValueChange={setArea}>
+              <Select value={area} onValueChange={handleAreaChange}>
                 <SelectTrigger><SelectValue placeholder="Select area" /></SelectTrigger>
                 <SelectContent className="z-[1100]">
                   {BENGALURU_AREAS.map((a) => (
@@ -298,7 +313,7 @@ function ReportPage() {
             Use my location
           </Button>
           <div className="mt-3 h-64 overflow-hidden rounded-lg border border-border">
-            <LocationPicker value={coords} onChange={(lat, lng) => setCoords({ lat, lng })} />
+            <LocationPicker value={coords} onChange={handlePinChange} />
           </div>
           {coords && (
             <p className="mt-1.5 font-mono text-xs text-muted-foreground">
