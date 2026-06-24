@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Filter, Loader2, Plus, Search } from "lucide-react";
+import { Filter, Plus, Search } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { MapView } from "@/components/map/MapView";
 import { CityIntro } from "@/components/CityIntro";
+import { ComicLoader } from "@/components/ComicLoader";
 import { ReportCard } from "@/components/ReportCard";
 import { LocationBanner } from "@/components/LocationBanner";
 import { Button } from "@/components/ui/button";
@@ -160,8 +161,8 @@ function Index() {
           </div>
           <div className="flex-1 space-y-2 overflow-y-auto px-4 pb-6">
             {isLoading ? (
-              <div className="grid place-items-center py-16 text-muted-foreground">
-                <Loader2 className="size-6 animate-spin" />
+              <div className="py-10">
+                <ComicLoader message="Loading reports" />
               </div>
             ) : filtered.length === 0 ? (
               <div className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">

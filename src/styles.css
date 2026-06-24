@@ -223,3 +223,47 @@
   box-shadow: 0 4px 10px -2px oklch(0 0 0 / 0.45);
 }
 .pothole-pin span { transform: rotate(45deg); font-size: 13px; }
+
+/* Comic / halftone duotone style for intro & loading screens */
+.comic-surface {
+  background-color: oklch(0.99 0.01 250);
+  background-image:
+    radial-gradient(oklch(0.55 0.18 265 / 0.16) 1.4px, transparent 1.6px);
+  background-size: 14px 14px;
+}
+.comic-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: oklch(0.32 0.13 265);
+  text-shadow: 3px 3px 0 oklch(0.99 0.01 250), 5px 5px 0 oklch(0.55 0.18 265 / 0.35);
+}
+.comic-panel {
+  position: relative;
+  background: #fff;
+  border: 3px solid oklch(0.22 0.06 265);
+  border-radius: 4px;
+  box-shadow: 5px 6px 0 oklch(0.55 0.18 265 / 0.45);
+  overflow: hidden;
+}
+.comic-caption {
+  display: block;
+  border-top: 3px solid oklch(0.22 0.06 265);
+  background: oklch(0.95 0.04 260);
+  padding: 4px 8px;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: oklch(0.3 0.12 265);
+  text-align: center;
+}
+.comic-tagline {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-size: 0.8rem;
+  color: oklch(0.4 0.16 265);
+}
