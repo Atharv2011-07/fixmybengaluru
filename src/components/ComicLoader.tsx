@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import panel1 from "@/assets/bengaluru-panel-1.jpg";
 import panel2 from "@/assets/bengaluru-panel-2.jpg";
@@ -12,7 +13,10 @@ export function ComicLoader({
   message?: string;
   fullscreen?: boolean;
 }) {
-  const src = PANELS[Math.floor(Math.random() * PANELS.length)];
+  // Start deterministic for SSR/hydration, then randomize on the client.
+  const [idx, setIdx] = useState(0);
+  useEffect(() => setIdx(Math.floor(Math.random() * PANELS.length)), []);
+  const src = PANELS[idx];
   return (
     <div
       className={
