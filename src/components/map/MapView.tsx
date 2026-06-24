@@ -1,3 +1,4 @@
+/// <reference types="google.maps" />
 import { useEffect, useRef } from "react";
 import { loadGoogleMaps, pinIcon } from "@/lib/googleMaps";
 import { BENGALURU_CENTER } from "@/lib/constants";

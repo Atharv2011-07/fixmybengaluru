@@ -1,3 +1,4 @@
+/// <reference types="google.maps" />
 // Loads the Google Maps JS API once, via the Lovable connector browser key.
 let promise: Promise<typeof google.maps> | null = null;
 
