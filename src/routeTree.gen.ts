@@ -13,6 +13,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ReportRouteImport } from './routes/report'
 import { Route as HallOfShameRouteImport } from './routes/hall-of-shame'
 import { Route as DeveloperRouteImport } from './routes/developer'
+import { Route as CommunityRouteImport } from './routes/community'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ReportsIdRouteImport } from './routes/reports.$id'
@@ -37,6 +38,11 @@ const DeveloperRoute = DeveloperRouteImport.update({
   path: '/developer',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CommunityRoute = CommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -56,6 +62,7 @@ const ReportsIdRoute = ReportsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
   '/developer': typeof DeveloperRoute
   '/hall-of-shame': typeof HallOfShameRoute
   '/report': typeof ReportRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
   '/developer': typeof DeveloperRoute
   '/hall-of-shame': typeof HallOfShameRoute
   '/report': typeof ReportRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
   '/developer': typeof DeveloperRoute
   '/hall-of-shame': typeof HallOfShameRoute
   '/report': typeof ReportRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/community'
     | '/developer'
     | '/hall-of-shame'
     | '/report'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/community'
     | '/developer'
     | '/hall-of-shame'
     | '/report'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/auth'
+    | '/community'
     | '/developer'
     | '/hall-of-shame'
     | '/report'
@@ -114,6 +126,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
+  CommunityRoute: typeof CommunityRoute
   DeveloperRoute: typeof DeveloperRoute
   HallOfShameRoute: typeof HallOfShameRoute
   ReportRoute: typeof ReportRoute
@@ -151,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DeveloperRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/community': {
+      id: '/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -178,6 +198,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
+  CommunityRoute: CommunityRoute,
   DeveloperRoute: DeveloperRoute,
   HallOfShameRoute: HallOfShameRoute,
   ReportRoute: ReportRoute,
