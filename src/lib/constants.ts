@@ -83,6 +83,41 @@ export const BENGALURU_AREAS = [
   "Other",
 ];
 
+// Approximate centre coordinates for each Bengaluru locality.
+export const BENGALURU_AREA_COORDS: Record<string, { lat: number; lng: number }> = {
+  Koramangala: { lat: 12.9352, lng: 77.6245 },
+  Indiranagar: { lat: 12.9719, lng: 77.6412 },
+  Whitefield: { lat: 12.9698, lng: 77.75 },
+  Jayanagar: { lat: 12.925, lng: 77.5938 },
+  "HSR Layout": { lat: 12.9116, lng: 77.6389 },
+  Marathahalli: { lat: 12.9591, lng: 77.6974 },
+  "Electronic City": { lat: 12.8452, lng: 77.6602 },
+  "BTM Layout": { lat: 12.9166, lng: 77.6101 },
+  Malleshwaram: { lat: 13.0035, lng: 77.5647 },
+  Hebbal: { lat: 13.0358, lng: 77.597 },
+  Banashankari: { lat: 12.9255, lng: 77.5468 },
+  Yelahanka: { lat: 13.1007, lng: 77.5963 },
+  Rajajinagar: { lat: 12.9914, lng: 77.552 },
+  "JP Nagar": { lat: 12.9063, lng: 77.5857 },
+  Bellandur: { lat: 12.9259, lng: 77.6762 },
+  "Sarjapur Road": { lat: 12.9009, lng: 77.6878 },
+};
+
+// Returns the closest known Bengaluru area to a coordinate (within ~5km), else "Other".
+export function nearestArea(lat: number, lng: number): string {
+  let best = "Other";
+  let min = Infinity;
+  for (const [name, c] of Object.entries(BENGALURU_AREA_COORDS)) {
+    const d = (c.lat - lat) ** 2 + (c.lng - lng) ** 2;
+    if (d < min) {
+      min = d;
+      best = name;
+    }
+  }
+  // ~0.05 deg ≈ 5.5km guard so far-away pins fall back to "Other".
+  return min <= 0.05 ** 2 ? best : "Other";
+}
+
 // Marker color for the map legend per spec: priority-driven.
 export function markerColor(status: ReportStatus, severity: Severity): string {
   if (status === "resolved") return "oklch(0.64 0.16 150)"; // green

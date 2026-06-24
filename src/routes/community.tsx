@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Loader2, MessagesSquare, Send, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/useAuth";
+import { moderateMessage } from "@/lib/moderation";
 import { AppHeader } from "@/components/AppHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -90,12 +91,21 @@ function CommunityPage() {
   const send = async () => {
     const content = text.trim();
     if (!content || !user) return;
+    const { clean, flagged, count } = moderateMessage(content);
+    if (flagged) {
+      toast.warning(
+        count > 2
+          ? "Message blocked — let's keep the chat respectful."
+          : "Heads up: inappropriate language was filtered out.",
+      );
+      if (count > 2) return; // too much abuse — refuse to post
+    }
     setSending(true);
     const display_name =
       (user.user_metadata?.name as string) || user.email?.split("@")[0] || "Citizen";
     const { error } = await supabase
       .from("community_messages")
-      .insert({ user_id: user.id, display_name, content });
+      .insert({ user_id: user.id, display_name, content: clean });
     setSending(false);
     if (error) {
       toast.error("Message failed to send");

@@ -5,7 +5,6 @@ import { Filter, Plus, Search } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { MapView } from "@/components/map/MapView";
 import { CityIntro } from "@/components/CityIntro";
-import { ComicLoader } from "@/components/ComicLoader";
 import { ReportCard } from "@/components/ReportCard";
 import { LocationBanner } from "@/components/LocationBanner";
 import { Button } from "@/components/ui/button";
@@ -161,8 +160,10 @@ function Index() {
           </div>
           <div className="flex-1 space-y-2 overflow-y-auto px-4 pb-6">
             {isLoading ? (
-              <div className="py-10">
-                <ComicLoader message="Loading reports" />
+              <div className="space-y-2 py-2">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="h-24 animate-pulse rounded-lg bg-muted/60" />
+                ))}
               </div>
             ) : filtered.length === 0 ? (
               <div className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
