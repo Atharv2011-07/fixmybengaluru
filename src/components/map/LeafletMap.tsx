@@ -27,6 +27,20 @@ function FitToReports({ reports }: { reports: PotholeReport[] }) {
   return null;
 }
 
+function InvalidateSize() {
+  const map = useMap();
+  useEffect(() => {
+    const fix = () => map.invalidateSize();
+    const t = setTimeout(fix, 120);
+    window.addEventListener("resize", fix);
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("resize", fix);
+    };
+  }, [map]);
+  return null;
+}
+
 export default function LeafletMap({ reports }: { reports: PotholeReport[] }) {
   return (
     <MapContainer
@@ -59,6 +73,7 @@ export default function LeafletMap({ reports }: { reports: PotholeReport[] }) {
           </>
         </LayersControl.BaseLayer>
       </LayersControl>
+      <InvalidateSize />
       <FitToReports reports={reports} />
       {reports.map((r) => (
         <Marker key={r.id} position={[r.latitude, r.longitude]} icon={pin(markerColor(r.status, r.severity))}>
