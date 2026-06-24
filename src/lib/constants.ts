@@ -127,13 +127,18 @@ export function markerColor(status: ReportStatus, severity: Severity): string {
 }
 
 // ── BBMP WhatsApp integration ────────────────────────────────────────────────
-// BBMP public grievance WhatsApp line. Country code + number, no symbols.
-export const BBMP_WHATSAPP_NUMBER = "918105003700";
+// Destination WhatsApp number. Country code + number, no symbols.
+export const BBMP_WHATSAPP_NUMBER = "919480685700";
+
+// Public-facing app/website identity used in the message footer.
+export const APP_NAME = "FixMyBengaluru";
+export const APP_WEBSITE = "https://fixmybengaluru.lovable.app";
 
 export function buildBbmpWhatsAppUrl(report: {
   complaint_id: string;
   description: string;
   severity: Severity;
+  reporter_name?: string | null;
   road_name?: string | null;
   landmark?: string | null;
   area?: string | null;
@@ -142,23 +147,31 @@ export function buildBbmpWhatsAppUrl(report: {
   longitude: number;
   is_emergency?: boolean;
 }): string {
+  const citizen = report.reporter_name?.trim() || `${APP_NAME} User`;
+  const address =
+    [report.road_name, report.landmark, report.area].filter(Boolean).join(", ") ||
+    `${report.latitude.toFixed(5)}, ${report.longitude.toFixed(5)}`;
   const maps = `https://maps.google.com/?q=${report.latitude},${report.longitude}`;
+
   const lines = [
-    report.is_emergency ? "🚨 *URGENT POTHOLE REPORT* 🚨" : "*Pothole complaint*",
+    `📋 *Citizen Report*`,
     "",
-    `Complaint ID: ${report.complaint_id}`,
-    `Severity: ${SEVERITY_CONFIG[report.severity].label}`,
-    report.road_name ? `Road: ${report.road_name}` : null,
-    report.landmark ? `Landmark: ${report.landmark}` : null,
-    report.area ? `Area: ${report.area}` : null,
-    report.ward ? `Ward: ${report.ward}` : null,
     "",
-    report.description,
+    `*Citizen Name:* ${citizen}`,
     "",
-    `Location: ${maps}`,
+    `*Complaint Description:* ${report.description}`,
     "",
-    "Please take action. Reported via Pothole Bengaluru.",
-  ].filter(Boolean);
+    `*Severity:* ${SEVERITY_CONFIG[report.severity].label}`,
+    "",
+    `*Zone:* ${report.area?.trim() || "Unknown Zone"}`,
+    "",
+    `*Ward:* ${report.ward?.trim() || "Unknown Ward"}`,
+    "",
+    `*Address:* ${address}`,
+    `📍 ${maps}`,
+    "",
+    `Website: ${APP_NAME} — ${APP_WEBSITE}`,
+  ];
   return `https://wa.me/${BBMP_WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
 }
 
