@@ -26,7 +26,7 @@ export const updateContactAdmin = createServerFn({ method: "POST" })
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    const { data: existing } = await supabaseAdmin
+    const { data: existing } = await (supabaseAdmin as any)
       .from("site_contact")
       .select("id")
       .order("created_at", { ascending: true })
@@ -43,13 +43,13 @@ export const updateContactAdmin = createServerFn({ method: "POST" })
     };
 
     if (existing?.id) {
-      const { error } = await supabaseAdmin
+      const { error } = await (supabaseAdmin as any)
         .from("site_contact")
         .update(payload)
         .eq("id", existing.id);
       if (error) throw new Error(error.message);
     } else {
-      const { error } = await supabaseAdmin.from("site_contact").insert(payload);
+      const { error } = await (supabaseAdmin as any).from("site_contact").insert(payload);
       if (error) throw new Error(error.message);
     }
     return { ok: true };
