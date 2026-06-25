@@ -11,8 +11,13 @@ import { SeverityBadge } from "@/components/SeverityBadge";
 import { StatusBadge } from "@/components/StatusBadge";
 import { fetchReports } from "@/lib/reports";
 import { deleteReportAdmin } from "@/lib/admin.functions";
+import { fetchContact } from "@/lib/contact";
+import { updateContactAdmin } from "@/lib/contact.functions";
 import { useAuth } from "@/lib/useAuth";
 import { useIsAdmin } from "@/lib/useIsAdmin";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -118,6 +123,8 @@ function AdminDashboard() {
         <p className="mt-1 text-sm text-muted-foreground">
           Admin-only controls. Permanently delete pothole reports — {reports.length} total.
         </p>
+
+        <ContactEditor />
 
         {isLoading ? (
           <div className="grid place-items-center py-16 text-muted-foreground">
