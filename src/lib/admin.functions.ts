@@ -67,7 +67,7 @@ export const updateReportStatusAdmin = createServerFn({ method: "POST" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin
       .from("reports")
-      .update({ status: data.status })
+      .update({ status: data.status as (typeof STATUSES)[number] })
       .eq("id", data.reportId);
     if (error) throw new Error(error.message);
     return { ok: true };
