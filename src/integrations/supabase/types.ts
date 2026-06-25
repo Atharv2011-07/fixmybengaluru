@@ -222,6 +222,42 @@ export type Database = {
         }
         Relationships: []
       }
+      site_contact: {
+        Row: {
+          address: string | null
+          created_at: string
+          description: string | null
+          email: string | null
+          hours: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          whatsapp: string | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          hours?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          whatsapp?: string | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          hours?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
