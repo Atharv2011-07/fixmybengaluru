@@ -52,10 +52,7 @@ function Index() {
     queryFn: fetchReports,
   });
 
-  const [intro, setIntro] = useState(false);
-  useEffect(() => {
-    if (!sessionStorage.getItem("pb-intro-seen")) setIntro(true);
-  }, []);
+  const [intro, setIntro] = useState(true);
 
   const [search, setSearch] = useState("");
   const [area, setArea] = useState("all");
