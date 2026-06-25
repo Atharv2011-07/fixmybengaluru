@@ -176,3 +176,90 @@ function AdminDashboard() {
     </div>
   );
 }
+
+function ContactEditor() {
+  const qc = useQueryClient();
+  const update = useServerFn(updateContactAdmin);
+  const { data: contact, isLoading } = useQuery({ queryKey: ["site-contact"], queryFn: fetchContact });
+
+  const [form, setForm] = useState({
+    phone: "",
+    email: "",
+    whatsapp: "",
+    address: "",
+    hours: "",
+    description: "",
+  });
+  const [saving, setSaving] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+
+  if (contact && !hydrated) {
+    setForm({
+      phone: contact.phone ?? "",
+      email: contact.email ?? "",
+      whatsapp: contact.whatsapp ?? "",
+      address: contact.address ?? "",
+      hours: contact.hours ?? "",
+      description: contact.description ?? "",
+    });
+    setHydrated(true);
+  }
+
+  const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  const save = async () => {
+    setSaving(true);
+    try {
+      await update({ data: form });
+      toast.success("Contact info updated");
+      qc.invalidateQueries({ queryKey: ["site-contact"] });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed to update contact info");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <section className="card-elevated mt-6 p-4">
+      <h2 className="font-display text-lg font-bold">Contact Panel</h2>
+      <p className="mt-0.5 text-sm text-muted-foreground">
+        Edit the public contact details shown on the Contact page.
+      </p>
+      {isLoading ? (
+        <div className="grid place-items-center py-8 text-muted-foreground">
+          <Loader2 className="size-5 animate-spin" />
+        </div>
+      ) : (
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <Field label="Phone"><Input value={form.phone} onChange={set("phone")} /></Field>
+          <Field label="WhatsApp"><Input value={form.whatsapp} onChange={set("whatsapp")} /></Field>
+          <Field label="Email"><Input value={form.email} onChange={set("email")} /></Field>
+          <Field label="Hours"><Input value={form.hours} onChange={set("hours")} /></Field>
+          <div className="sm:col-span-2">
+            <Field label="Address"><Input value={form.address} onChange={set("address")} /></Field>
+          </div>
+          <div className="sm:col-span-2">
+            <Field label="Description"><Textarea value={form.description} onChange={set("description")} rows={3} /></Field>
+          </div>
+          <div className="sm:col-span-2">
+            <Button onClick={save} disabled={saving} className="gap-1.5">
+              {saving && <Loader2 className="size-4 animate-spin" />}
+              Save contact info
+            </Button>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-1.5">
+      <Label>{label}</Label>
+      {children}
+    </div>
+  );
+}
