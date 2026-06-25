@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Filter, Plus, Search } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
@@ -82,14 +82,7 @@ function Index() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      {intro && (
-        <CityIntro
-          onDone={() => {
-            sessionStorage.setItem("pb-intro-seen", "1");
-            setIntro(false);
-          }}
-        />
-      )}
+      {intro && <CityIntro onDone={() => setIntro(false)} />}
       <AppHeader />
       <LocationBanner />
 
