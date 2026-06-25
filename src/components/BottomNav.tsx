@@ -3,11 +3,11 @@ import { Home, Skull, MessagesSquare, Brain, Phone } from "lucide-react";
 
 const ITEMS = [
   { to: "/", label: "Home", icon: Home, exact: true },
-  { to: "/hall-of-shame", label: "Shame", icon: Skull },
-  { to: "/community", label: "Community", icon: MessagesSquare },
-  { to: "/quiz", label: "Quiz", icon: Brain },
-  { to: "/contact", label: "Contact", icon: Phone },
-] as const;
+  { to: "/hall-of-shame", label: "Shame", icon: Skull, exact: false },
+  { to: "/community", label: "Community", icon: MessagesSquare, exact: false },
+  { to: "/quiz", label: "Quiz", icon: Brain, exact: false },
+  { to: "/contact", label: "Contact", icon: Phone, exact: false },
+];
 
 export function BottomNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
