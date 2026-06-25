@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { MapPin, Plus, LogOut, User as UserIcon, ShieldAlert, Skull, MessagesSquare, Brain } from "lucide-react";
+import { MapPin, Plus, LogOut, User as UserIcon, ShieldAlert } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/useAuth";
 import { useIsAdmin } from "@/lib/useIsAdmin";
@@ -37,24 +37,6 @@ export function AppHeader() {
 
         <nav className="flex items-center gap-1.5">
           <ThemeToggle />
-          <Button asChild variant="ghost" size="sm" className="gap-1.5">
-            <Link to="/hall-of-shame">
-              <Skull className="size-4" />
-              <span className="hidden sm:inline">Hall of Shame</span>
-            </Link>
-          </Button>
-          <Button asChild variant="ghost" size="sm" className="gap-1.5">
-            <Link to="/community">
-              <MessagesSquare className="size-4" />
-              <span className="hidden sm:inline">Community</span>
-            </Link>
-          </Button>
-          <Button asChild variant="ghost" size="sm" className="gap-1.5">
-            <Link to="/quiz">
-              <Brain className="size-4" />
-              <span className="hidden sm:inline">Quiz</span>
-            </Link>
-          </Button>
           {isAdmin && (
             <Button asChild variant="outline" size="sm" className="gap-1.5">
               <Link to="/developer">
