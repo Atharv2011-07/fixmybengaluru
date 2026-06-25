@@ -19,6 +19,7 @@ import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import { Toaster } from "@/components/ui/sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { BottomNav } from "@/components/BottomNav";
 
 function NotFoundComponent() {
   return (
@@ -150,7 +151,10 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <div className="pb-16">
+        <Outlet />
+      </div>
+      <BottomNav />
       {mounted && <Toaster position="top-center" richColors />}
     </QueryClientProvider>
   );
