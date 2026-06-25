@@ -42,3 +42,34 @@ export function moderateMessage(input: string): ModerationResult {
   });
   return { clean, flagged: count > 0, count };
 }
+
+// Detects keyboard-mashing / random gibberish so people can't submit junk
+// descriptions. Returns a human-readable reason when the text looks invalid.
+export function validateDescription(input: string): { ok: boolean; reason?: string } {
+  const text = input.trim();
+  if (text.length < 10) return { ok: false, reason: "Add a short description (min 10 chars)." };
+
+  const words = text.split(/\s+/).filter(Boolean);
+  if (words.length < 3) return { ok: false, reason: "Please write at least 3 words describing the issue." };
+
+  const letters = text.replace(/[^a-zA-Z]/g, "");
+  if (letters.length < 8) return { ok: false, reason: "Description must contain real words." };
+
+  // Most real words contain a vowel — flag text where almost none do.
+  const realWords = words.filter((w) => /[a-zA-Z]/.test(w));
+  const vowelWords = realWords.filter((w) => /[aeiou]/i.test(w));
+  if (realWords.length >= 3 && vowelWords.length / realWords.length < 0.5) {
+    return { ok: false, reason: "This doesn't look like a real description. Please describe the pothole." };
+  }
+
+  // Flag long runs of the same character or no vowels at all (keyboard mashing).
+  const vowelRatio = (letters.match(/[aeiou]/gi)?.length ?? 0) / letters.length;
+  if (vowelRatio < 0.18) {
+    return { ok: false, reason: "This doesn't look like a real description. Please describe the pothole." };
+  }
+  if (/(.)\1{4,}/.test(text)) {
+    return { ok: false, reason: "Please remove repeated characters and describe the pothole." };
+  }
+
+  return { ok: true };
+}

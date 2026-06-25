@@ -29,6 +29,7 @@ import { LocationPicker } from "@/components/map/MapView";
 import { SeverityBadge } from "@/components/SeverityBadge";
 import { analyzePothole, type PotholeAnalysis } from "@/lib/ai.functions";
 import { createReport, uploadPotholeImages } from "@/lib/reports";
+import { validateDescription } from "@/lib/moderation";
 import { useAuth } from "@/lib/useAuth";
 import {
   BENGALURU_AREAS,
@@ -45,7 +46,14 @@ export const Route = createFileRoute("/report")({
 });
 
 const schema = z.object({
-  description: z.string().trim().min(10, "Add a short description (min 10 chars)").max(1000),
+  description: z
+    .string()
+    .trim()
+    .min(10, "Add a short description (min 10 chars)")
+    .max(1000)
+    .refine((v) => validateDescription(v).ok, (v) => ({
+      message: validateDescription(v).reason ?? "Please enter a valid description.",
+    })),
 });
 
 function fileToDataUrl(file: File): Promise<string> {
