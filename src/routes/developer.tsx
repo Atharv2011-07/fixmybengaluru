@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { SeverityBadge } from "@/components/SeverityBadge";
 import { StatusBadge } from "@/components/StatusBadge";
 import { fetchReports } from "@/lib/reports";
-import { deleteReportAdmin } from "@/lib/admin.functions";
+import { deleteReportAdmin, updateReportStatusAdmin } from "@/lib/admin.functions";
 import { fetchContact } from "@/lib/contact";
 import { updateContactAdmin } from "@/lib/contact.functions";
 import { useAuth } from "@/lib/useAuth";
@@ -18,6 +18,14 @@ import { useIsAdmin } from "@/lib/useIsAdmin";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { STATUS_CONFIG, STATUS_ORDER, type ReportStatus } from "@/lib/constants";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -95,7 +103,9 @@ function DeveloperZone() {
 function AdminDashboard() {
   const qc = useQueryClient();
   const del = useServerFn(deleteReportAdmin);
+  const updateStatus = useServerFn(updateReportStatusAdmin);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
 
   const { data: reports = [], isLoading } = useQuery({ queryKey: ["reports"], queryFn: fetchReports });
 
@@ -109,6 +119,19 @@ function AdminDashboard() {
       toast.error(e instanceof Error ? e.message : "Failed to delete report");
     } finally {
       setDeleting(null);
+    }
+  };
+
+  const handleStatusChange = async (id: string, status: ReportStatus) => {
+    setUpdatingStatus(id);
+    try {
+      await updateStatus({ data: { reportId: id, status } });
+      toast.success(`Status updated to ${STATUS_CONFIG[status].label}`);
+      qc.invalidateQueries({ queryKey: ["reports"] });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed to update status");
+    } finally {
+      setUpdatingStatus(null);
     }
   };
 
@@ -148,7 +171,28 @@ function AdminDashboard() {
                     <span>· {formatDistanceToNow(new Date(r.created_at), { addSuffix: true })}</span>
                   </div>
                 </div>
-                <AlertDialog>
+                <div className="flex items-center gap-2">
+                  <Select
+                    value={r.status}
+                    onValueChange={(v) => handleStatusChange(r.id, v as ReportStatus)}
+                    disabled={updatingStatus === r.id}
+                  >
+                    <SelectTrigger className="h-9 w-[170px]">
+                      {updatingStatus === r.id ? (
+                        <span className="flex items-center gap-1.5 text-muted-foreground">
+                          <Loader2 className="size-4 animate-spin" /> Updating…
+                        </span>
+                      ) : (
+                        <SelectValue />
+                      )}
+                    </SelectTrigger>
+                    <SelectContent className="z-[1200]">
+                      {STATUS_ORDER.map((s) => (
+                        <SelectItem key={s} value={s}>{STATUS_CONFIG[s].label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button variant="destructive" size="sm" className="gap-1.5" disabled={deleting === r.id}>
                       {deleting === r.id ? <Loader2 className="size-4 animate-spin" /> : <Trash2 className="size-4" />}
@@ -167,7 +211,8 @@ function AdminDashboard() {
                       <AlertDialogAction onClick={() => handleDelete(r.id)}>Delete</AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
-                </AlertDialog>
+                  </AlertDialog>
+                </div>
               </li>
             ))}
           </ul>
