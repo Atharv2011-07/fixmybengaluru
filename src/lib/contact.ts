@@ -19,5 +19,5 @@ export async function fetchContact(): Promise<SiteContact | null> {
     .limit(1)
     .maybeSingle();
   if (error) throw error;
-  return (data as SiteContact) ?? null;
+  return (data as unknown as SiteContact) ?? null;
 }
