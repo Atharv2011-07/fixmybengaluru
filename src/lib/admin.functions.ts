@@ -44,3 +44,31 @@ export const deleteReportAdmin = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+const STATUSES = ["submitted", "under_review", "assigned", "in_progress", "resolved"] as const;
+
+export const updateReportStatusAdmin = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { reportId: string; status: string }) => {
+    if (!data?.reportId) throw new Error("reportId is required");
+    if (!STATUSES.includes(data.status as (typeof STATUSES)[number])) {
+      throw new Error("Invalid status");
+    }
+    return data;
+  })
+  .handler(async ({ data, context }): Promise<{ ok: true }> => {
+    const { data: isAdmin, error: roleErr } = await context.supabase.rpc("has_role", {
+      _user_id: context.userId,
+      _role: "admin",
+    });
+    if (roleErr) throw new Error(roleErr.message);
+    if (!isAdmin) throw new Error("Forbidden: admin access required");
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin
+      .from("reports")
+      .update({ status: data.status as (typeof STATUSES)[number] })
+      .eq("id", data.reportId);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
