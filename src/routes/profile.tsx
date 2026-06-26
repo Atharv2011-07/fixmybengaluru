@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { FileText, Flame, Loader2, MessageCircle, User as UserIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -20,7 +20,6 @@ export const Route = createFileRoute("/profile")({
 
 function ProfilePage() {
   const { user, isAuthenticated, loading } = useAuth();
-  const navigate = useNavigate();
   const [busy, setBusy] = useState(true);
   const [reportCount, setReportCount] = useState(0);
   const [wspCount, setWspCount] = useState(0);
