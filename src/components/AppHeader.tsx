@@ -30,7 +30,7 @@ export function AppHeader() {
             <MapPin className="size-5" />
           </span>
           <span className="flex flex-col leading-none">
-            <span className="font-display text-base font-bold tracking-tight">Pothole Bengaluru</span>
+            <span className="font-display text-base font-bold tracking-tight">fixmybengaluru</span>
             <span className="text-[11px] text-muted-foreground">Report. Track. Resolve.</span>
           </span>
         </Link>
