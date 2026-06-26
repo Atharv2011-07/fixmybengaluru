@@ -27,6 +27,7 @@ import {
 import { STATUS_CONFIG, STATUS_ORDER } from "@/lib/constants";
 import { buildBbmpWhatsAppUrl } from "@/lib/constants";
 import { useAuth } from "@/lib/useAuth";
+import { incrementWspComplaintCount } from "@/lib/profileStats";
 
 export const Route = createFileRoute("/reports/$id")({
   head: () => ({ meta: [{ title: "Report details — Pothole Bengaluru" }] }),
