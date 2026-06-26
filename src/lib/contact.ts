@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { getPublicContact } from "@/lib/contact.functions";
 
 export interface SiteContact {
   id: string;
@@ -12,12 +12,6 @@ export interface SiteContact {
 }
 
 export async function fetchContact(): Promise<SiteContact | null> {
-  const { data, error } = await supabase
-    .from("site_contact" as never)
-    .select("*")
-    .order("created_at", { ascending: true })
-    .limit(1)
-    .maybeSingle();
-  if (error) throw error;
-  return (data as unknown as SiteContact) ?? null;
+  const data = await getPublicContact();
+  return (data as SiteContact) ?? null;
 }
