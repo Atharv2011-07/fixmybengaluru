@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ReportRouteImport } from './routes/report'
 import { Route as QuizRouteImport } from './routes/quiz'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as HallOfShameRouteImport } from './routes/hall-of-shame'
 import { Route as DeveloperRouteImport } from './routes/developer'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -33,6 +34,11 @@ const ReportRoute = ReportRouteImport.update({
 const QuizRoute = QuizRouteImport.update({
   id: '/quiz',
   path: '/quiz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HallOfShameRoute = HallOfShameRouteImport.update({
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/developer': typeof DeveloperRoute
   '/hall-of-shame': typeof HallOfShameRoute
+  '/profile': typeof ProfileRoute
   '/quiz': typeof QuizRoute
   '/report': typeof ReportRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -90,6 +97,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/developer': typeof DeveloperRoute
   '/hall-of-shame': typeof HallOfShameRoute
+  '/profile': typeof ProfileRoute
   '/quiz': typeof QuizRoute
   '/report': typeof ReportRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -103,6 +111,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/developer': typeof DeveloperRoute
   '/hall-of-shame': typeof HallOfShameRoute
+  '/profile': typeof ProfileRoute
   '/quiz': typeof QuizRoute
   '/report': typeof ReportRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/developer'
     | '/hall-of-shame'
+    | '/profile'
     | '/quiz'
     | '/report'
     | '/sitemap.xml'
@@ -129,6 +139,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/developer'
     | '/hall-of-shame'
+    | '/profile'
     | '/quiz'
     | '/report'
     | '/sitemap.xml'
@@ -141,6 +152,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/developer'
     | '/hall-of-shame'
+    | '/profile'
     | '/quiz'
     | '/report'
     | '/sitemap.xml'
@@ -154,6 +166,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DeveloperRoute: typeof DeveloperRoute
   HallOfShameRoute: typeof HallOfShameRoute
+  ProfileRoute: typeof ProfileRoute
   QuizRoute: typeof QuizRoute
   ReportRoute: typeof ReportRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -181,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/quiz'
       fullPath: '/quiz'
       preLoaderRoute: typeof QuizRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/hall-of-shame': {
@@ -242,6 +262,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DeveloperRoute: DeveloperRoute,
   HallOfShameRoute: HallOfShameRoute,
+  ProfileRoute: ProfileRoute,
   QuizRoute: QuizRoute,
   ReportRoute: ReportRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,

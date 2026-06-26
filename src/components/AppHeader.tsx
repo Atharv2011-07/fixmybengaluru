@@ -62,6 +62,11 @@ export function AppHeader() {
                 <DropdownMenuItem disabled className="text-xs opacity-100">
                   {user?.email}
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/profile">
+                    <UserIcon className="mr-2 size-4" /> Profile
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={signOut}>
                   <LogOut className="mr-2 size-4" /> Sign out
                 </DropdownMenuItem>

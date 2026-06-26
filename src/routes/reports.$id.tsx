@@ -27,6 +27,7 @@ import {
 import { STATUS_CONFIG, STATUS_ORDER } from "@/lib/constants";
 import { buildBbmpWhatsAppUrl } from "@/lib/constants";
 import { useAuth } from "@/lib/useAuth";
+import { incrementWspComplaintCount } from "@/lib/profileStats";
 
 export const Route = createFileRoute("/reports/$id")({
   head: () => ({ meta: [{ title: "Report details — Pothole Bengaluru" }] }),
@@ -134,6 +135,7 @@ function ReportDetail() {
           href={buildBbmpWhatsAppUrl(report)}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => incrementWspComplaintCount()}
           className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-3 font-semibold text-white shadow-[var(--shadow-card)] transition hover:brightness-105"
         >
           <WhatsAppIcon className="size-5" />
