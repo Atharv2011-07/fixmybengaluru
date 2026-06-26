@@ -10,6 +10,33 @@ export interface ContactUpdateInput {
   description: string;
 }
 
+export interface PublicSiteContact {
+  id: string;
+  phone: string | null;
+  email: string | null;
+  whatsapp: string | null;
+  address: string | null;
+  hours: string | null;
+  description: string | null;
+  updated_at: string;
+}
+
+// Publicly readable contact details, served through a controlled server
+// function so the underlying table is not directly exposed via the Data API.
+export const getPublicContact = createServerFn({ method: "GET" }).handler(
+  async (): Promise<PublicSiteContact | null> => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data, error } = await (supabaseAdmin as any)
+      .from("site_contact")
+      .select("id, phone, email, whatsapp, address, hours, description, updated_at")
+      .order("created_at", { ascending: true })
+      .limit(1)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return (data as PublicSiteContact) ?? null;
+  },
+);
+
 export const updateContactAdmin = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: ContactUpdateInput) => {
