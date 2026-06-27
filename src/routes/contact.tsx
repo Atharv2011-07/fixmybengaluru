@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Loader2, Phone, Mail, MessageCircle, MapPin, Clock } from "lucide-react";
+import { Loader2, Mail, MapPin, Clock } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { fetchContact } from "@/lib/contact";
 
@@ -40,8 +40,6 @@ function ContactPage() {
           </div>
         ) : (
           <div className="mt-6 space-y-3">
-            <ContactRow icon={<Phone className="size-5" />} label="Phone" value={contact?.phone} href={contact?.phone ? `tel:${contact.phone.replace(/\s/g, "")}` : undefined} />
-            <ContactRow icon={<MessageCircle className="size-5" />} label="WhatsApp" value={contact?.whatsapp} href={contact?.whatsapp ? `https://wa.me/${contact.whatsapp.replace(/[^0-9]/g, "")}` : undefined} />
             <ContactRow icon={<Mail className="size-5" />} label="Email" value={contact?.email} href={contact?.email ? `mailto:${contact.email}` : undefined} />
             <ContactRow icon={<MapPin className="size-5" />} label="Address" value={contact?.address} />
             <ContactRow icon={<Clock className="size-5" />} label="Hours" value={contact?.hours} />
