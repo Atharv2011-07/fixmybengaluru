@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { MapPin, Plus, LogOut, User as UserIcon, ShieldAlert } from "lucide-react";
+import { Plus, LogOut, User as UserIcon, ShieldAlert } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/useAuth";
 import { useIsAdmin } from "@/lib/useIsAdmin";
@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import logoAsset from "@/assets/logo.png.asset.json";
 
 export function AppHeader() {
   const { user, isAuthenticated } = useAuth();
@@ -25,14 +26,12 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-[1000] border-b border-border/70 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
-        <Link to="/" className="flex items-center gap-2.5">
-          <span className="grid size-9 place-items-center rounded-xl bg-primary text-primary-foreground shadow-[var(--shadow-card)]">
-            <MapPin className="size-5" />
-          </span>
-          <span className="flex flex-col leading-none">
-            <span className="font-display text-base font-bold tracking-tight">fixmybengaluru</span>
-            <span className="text-[11px] text-muted-foreground">Report. Track. Resolve.</span>
-          </span>
+        <Link to="/" className="flex items-center">
+          <img
+            src={logoAsset.url}
+            alt="fixmybengaluru"
+            className="h-12 w-auto"
+          />
         </Link>
 
         <nav className="flex items-center gap-1.5">
