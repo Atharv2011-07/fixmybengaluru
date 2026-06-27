@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Plus, LogOut, User as UserIcon, ShieldAlert } from "lucide-react";
+import { Plus, LogOut, User as UserIcon, ShieldAlert, MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/useAuth";
 import { useIsAdmin } from "@/lib/useIsAdmin";
@@ -11,7 +11,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import logoAsset from "@/assets/logo.png.asset.json";
 
 export function AppHeader() {
   const { user, isAuthenticated } = useAuth();
@@ -26,12 +25,9 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-[1000] border-b border-border/70 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
-        <Link to="/" className="flex items-center">
-          <img
-            src={logoAsset.url}
-            alt="fixmybengaluru"
-            className="h-12 w-auto"
-          />
+        <Link to="/" className="flex items-center gap-2 text-lg font-bold tracking-tight text-foreground">
+          <MapPin className="size-5 text-primary" />
+          FixMyBengaluru
         </Link>
 
         <nav className="flex items-center gap-1.5">
