@@ -86,7 +86,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Pothole Bengaluru — Report & Track Potholes" },
+      { title: "FixMyBengaluru — Report Today. Fix Tomorrow." },
       {
         name: "description",
         content:
@@ -114,13 +114,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "icon",
         type: "image/png",
+        href: "/__l5e/assets-v1/1f30fe21-7ffc-4405-baa2-d310fbc2a8c3/favicon-32x32.png",
+      },
+      {
+        rel: "icon",
+        type: "image/png",
         sizes: "32x32",
-        href: "/__l5e/assets-v1/01f2b39c-89d3-497f-9223-9b1f9413ddba/favicon-32x32.png",
+        href: "/__l5e/assets-v1/1f30fe21-7ffc-4405-baa2-d310fbc2a8c3/favicon-32x32.png",
       },
       {
         rel: "apple-touch-icon",
         sizes: "180x180",
-        href: "/__l5e/assets-v1/e6ae14ee-2ff3-47c4-b5c7-b87496285fc3/favicon-180x180.png",
+        href: "/__l5e/assets-v1/2091e6ac-c98f-4490-99c3-4888531828e2/favicon-180x180.png",
       },
     ],
   }),
