@@ -172,6 +172,7 @@ function RootComponent() {
         <Outlet />
       </div>
       <BottomNav />
+      <BlobCursor global fillColor="#5227FF" zIndex={50} />
       {mounted && <Toaster position="top-center" richColors />}
     </QueryClientProvider>
   );

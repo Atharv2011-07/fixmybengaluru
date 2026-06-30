@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/useAuth";
 import { moderateMessage } from "@/lib/moderation";
 import { AppHeader } from "@/components/AppHeader";
+import DotField from "@/components/DotField";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 

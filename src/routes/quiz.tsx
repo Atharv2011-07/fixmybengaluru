@@ -5,6 +5,7 @@ import { Brain, CheckCircle2, Loader2, XCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/useAuth";
 import { AppHeader } from "@/components/AppHeader";
+import DotField from "@/components/DotField";
 import { Button } from "@/components/ui/button";
 import { getDailyQuiz, todayKolkata } from "@/lib/trivia";
 
