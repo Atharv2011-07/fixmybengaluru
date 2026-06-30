@@ -172,8 +172,14 @@ function RootComponent() {
         <Outlet />
       </div>
       <BottomNav />
-      <BlobCursor global fillColor="#5227FF" zIndex={50} />
+      <GlobalBlobCursor />
       {mounted && <Toaster position="top-center" richColors />}
     </QueryClientProvider>
   );
+}
+
+function GlobalBlobCursor() {
+  const { data } = useQuery({ queryKey: ["site-settings"], queryFn: fetchSettings });
+  if (data && data.show_blobcursor === false) return null;
+  return <BlobCursor global fillColor="#5227FF" zIndex={50} />;
 }
