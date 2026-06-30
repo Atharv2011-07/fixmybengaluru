@@ -4,6 +4,7 @@ import { FileText, Flame, Loader2, MessageCircle, User as UserIcon } from "lucid
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/useAuth";
 import { AppHeader } from "@/components/AppHeader";
+import DotField from "@/components/DotField";
 import { Button } from "@/components/ui/button";
 import { computeStreak, getWspComplaintCount } from "@/lib/profileStats";
 import { todayKolkata } from "@/lib/trivia";
@@ -52,8 +53,11 @@ function ProfilePage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <AppHeader />
-      <section className="border-b border-border/70 bg-gradient-hero text-primary-foreground">
-        <div className="mx-auto flex max-w-2xl items-center gap-3 px-4 py-6">
+      <section className="relative overflow-hidden border-b border-border/70 bg-gradient-hero text-primary-foreground">
+        <div className="pointer-events-none absolute inset-0 opacity-70">
+          <DotField bulgeStrength={67} glowRadius={160} />
+        </div>
+        <div className="relative mx-auto flex max-w-2xl items-center gap-3 px-4 py-6">
           <span className="grid size-11 place-items-center rounded-xl bg-primary-foreground/15 backdrop-blur">
             <UserIcon className="size-6" />
           </span>

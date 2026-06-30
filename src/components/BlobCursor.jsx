@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import './BlobCursor.css';
 
 export default function BlobCursor({
+  global = false,
   blobType = 'circle',
   fillColor = '#5227FF',
   trailCount = 3,
@@ -60,13 +61,42 @@ export default function BlobCursor({
     return () => window.removeEventListener('resize', onResize);
   }, [updateOffset]);
 
+  useEffect(() => {
+    if (!global) return;
+    const onMove = (e) => {
+      const x = 'clientX' in e ? e.clientX : e.touches[0].clientX;
+      const y = 'clientY' in e ? e.clientY : e.touches[0].clientY;
+      blobsRef.current.forEach((el, i) => {
+        if (!el) return;
+        const isLead = i === 0;
+        gsap.to(el, {
+          x: x,
+          y: y,
+          duration: isLead ? fastDuration : slowDuration,
+          ease: isLead ? fastEase : slowEase
+        });
+      });
+    };
+    window.addEventListener('mousemove', onMove, { passive: true });
+    window.addEventListener('touchmove', onMove, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('touchmove', onMove);
+    };
+  }, [global, fastDuration, slowDuration, fastEase, slowEase]);
+
   return (
     <div
       ref={containerRef}
       className="blob-container"
-      style={{ zIndex }}
-      onMouseMove={handleMove}
-      onTouchMove={handleMove}
+      style={{
+        zIndex,
+        position: global ? 'fixed' : 'relative',
+        inset: global ? 0 : undefined,
+        pointerEvents: global ? 'none' : 'auto',
+      }}
+      onMouseMove={global ? undefined : handleMove}
+      onTouchMove={global ? undefined : handleMove}
     >
       {useFilter && (
         <svg style={{ position: 'absolute', width: 0, height: 0 }}>
