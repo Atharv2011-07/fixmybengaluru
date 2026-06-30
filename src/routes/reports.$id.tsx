@@ -211,7 +211,7 @@ function ReportDetail() {
         </div>
 
         {/* Location */}
-        <div className="card-elevated mt-4 overflow-hidden">
+        <div className="card-elevated relative z-[60] mt-4 overflow-hidden bg-background">
           <div className="flex items-center gap-1.5 p-4 pb-2 text-sm font-semibold">
             <MapPin className="size-4 text-accent" /> Location
           </div>

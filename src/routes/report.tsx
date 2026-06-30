@@ -320,7 +320,7 @@ function ReportPage() {
             {locating ? <Loader2 className="size-4 animate-spin" /> : <LocateFixed className="size-4" />}
             Use my location
           </Button>
-          <div className="mt-3 h-64 overflow-hidden rounded-lg border border-border">
+          <div className="relative z-[60] mt-3 h-64 overflow-hidden rounded-lg border border-border bg-background">
             <LocationPicker value={coords} onChange={handlePinChange} />
           </div>
           {coords && (

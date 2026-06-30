@@ -109,7 +109,7 @@ function Index() {
       </section>
 
       {/* Map + list */}
-      <div className="mx-auto grid w-full max-w-6xl flex-1 grid-cols-1 gap-0 lg:grid-cols-[minmax(0,440px)_1fr]">
+      <div className="relative z-[60] mx-auto grid w-full max-w-6xl flex-1 grid-cols-1 gap-0 bg-background lg:grid-cols-[minmax(0,440px)_1fr]">
         <div className="relative h-[32vh] min-h-[240px] lg:h-[480px]">
           <MapView reports={filtered} />
           <div className="pointer-events-none absolute bottom-3 left-3 z-[500] flex flex-wrap gap-2 rounded-lg bg-card/90 p-2 text-[11px] shadow-[var(--shadow-card)] backdrop-blur">
