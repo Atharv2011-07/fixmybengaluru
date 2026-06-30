@@ -13,6 +13,9 @@ import { fetchReports } from "@/lib/reports";
 import { deleteReportAdmin, updateReportStatusAdmin } from "@/lib/admin.functions";
 import { fetchContact } from "@/lib/contact";
 import { updateContactAdmin } from "@/lib/contact.functions";
+import { fetchSettings, DEFAULT_SETTINGS } from "@/lib/settings";
+import { updateSettingsAdmin } from "@/lib/settings.functions";
+import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@/lib/useAuth";
 import { useIsAdmin } from "@/lib/useIsAdmin";
 import { Input } from "@/components/ui/input";
@@ -148,6 +151,8 @@ function AdminDashboard() {
         </p>
 
         <ContactEditor />
+
+        <SettingsEditor />
 
         {isLoading ? (
           <div className="grid place-items-center py-16 text-muted-foreground">
