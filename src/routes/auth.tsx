@@ -81,7 +81,10 @@ function AuthPage() {
   };
 
   return (
-    <div className="grid min-h-screen place-items-center bg-gradient-hero px-4 py-10">
+    <div className="relative grid min-h-screen place-items-center overflow-hidden bg-gradient-hero px-4 py-10">
+      <div className="pointer-events-none absolute inset-0 opacity-70">
+        <DotField bulgeStrength={67} glowRadius={160} />
+      </div>
       <div className="w-full max-w-sm">
         <Link to="/" className="mb-6 inline-flex items-center gap-1.5 text-sm text-primary-foreground/80 hover:text-primary-foreground">
           <ArrowLeft className="size-4" /> Back to map
