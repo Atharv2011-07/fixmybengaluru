@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { fetchReports } from "@/lib/reports";
+import { fetchSettings, DEFAULT_SETTINGS } from "@/lib/settings";
 import {
   BENGALURU_AREAS,
   SEVERITY_CONFIG,
@@ -51,6 +52,11 @@ function Index() {
   const { data: reports = [], isLoading } = useQuery({
     queryKey: ["reports"],
     queryFn: fetchReports,
+  });
+
+  const { data: settings = DEFAULT_SETTINGS } = useQuery({
+    queryKey: ["site-settings"],
+    queryFn: fetchSettings,
   });
 
   const [intro, setIntro] = useState(true);
@@ -88,16 +94,17 @@ function Index() {
       <LocationBanner />
 
       {/* Hero stats */}
+      {settings.show_hero && (
       <section className="relative overflow-hidden border-b border-border/70 bg-gradient-hero text-primary-foreground">
         <div className="pointer-events-none absolute inset-0 opacity-70">
-          <DotField bulgeStrength={67} glowRadius={160} />
+          {settings.show_dotfield && <DotField bulgeStrength={67} glowRadius={160} />}
         </div>
         <div className="relative mx-auto max-w-6xl px-4 py-6">
           <h1 className="font-display text-2xl font-bold sm:text-3xl">
-            Fix Bengaluru&apos;s roads, together
+            {settings.hero_title}
           </h1>
           <p className="mt-1 max-w-xl text-sm text-primary-foreground/80">
-            Spot a pothole? Report it in one tap, watch it move through repair, and back the worst ones with your vote.
+            {settings.hero_subtitle}
           </p>
           <div className="mt-4 grid grid-cols-2 gap-2 sm:max-w-xl sm:grid-cols-4">
             <Stat label="Reported" value={stats.total} />
@@ -107,11 +114,22 @@ function Index() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Map + list */}
-      <div className="relative z-[60] mx-auto grid w-full max-w-6xl flex-1 grid-cols-1 gap-0 bg-background lg:grid-cols-[minmax(0,440px)_1fr]">
-        <div className="relative h-[32vh] min-h-[240px] lg:h-[480px]">
+      <div
+        className="relative z-[60] mx-auto grid w-full max-w-6xl flex-1 grid-cols-1 gap-0 bg-background lg:[grid-template-columns:minmax(0,var(--map-w))_1fr]"
+        style={{ ["--map-w" as string]: `${settings.map_width_px}px` }}
+      >
+        <div
+          className="relative min-h-[240px] lg:!h-[var(--map-h)]"
+          style={{
+            height: `${settings.map_mobile_vh}vh`,
+            ["--map-h" as string]: `${settings.map_height_px}px`,
+          }}
+        >
           <MapView reports={filtered} />
+          {settings.show_legend && (
           <div className="pointer-events-none absolute bottom-3 left-3 z-[500] flex flex-wrap gap-2 rounded-lg bg-card/90 p-2 text-[11px] shadow-[var(--shadow-card)] backdrop-blur">
             {LEGEND.map((l) => (
               <span key={l.label} className="flex items-center gap-1">
@@ -120,9 +138,13 @@ function Index() {
               </span>
             ))}
           </div>
+          )}
         </div>
 
-        <aside className="flex flex-col border-t border-border/70 lg:max-h-[480px] lg:border-l lg:border-t-0">
+        <aside
+          className="flex flex-col border-t border-border/70 lg:border-l lg:border-t-0 lg:[max-height:var(--map-h)]"
+          style={{ ["--map-h" as string]: `${settings.map_height_px}px` }}
+        >
           <div className="flex items-center justify-between px-4 py-3">
             <p className="flex items-center gap-1.5 text-sm font-semibold">
               <Filter className="size-4 text-accent" /> {filtered.length} report{filtered.length === 1 ? "" : "s"}
