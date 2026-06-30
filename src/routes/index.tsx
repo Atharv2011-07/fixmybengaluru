@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Filter, Plus, Search } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { MapView } from "@/components/map/MapView";
+import DotField from "@/components/DotField";
 import { CityIntro } from "@/components/CityIntro";
 import { ReportCard } from "@/components/ReportCard";
 import { LocationBanner } from "@/components/LocationBanner";
@@ -87,8 +88,11 @@ function Index() {
       <LocationBanner />
 
       {/* Hero stats */}
-      <section className="border-b border-border/70 bg-gradient-hero text-primary-foreground">
-        <div className="mx-auto max-w-6xl px-4 py-6">
+      <section className="relative overflow-hidden border-b border-border/70 bg-gradient-hero text-primary-foreground">
+        <div className="pointer-events-none absolute inset-0 opacity-70">
+          <DotField bulgeStrength={67} glowRadius={160} />
+        </div>
+        <div className="relative mx-auto max-w-6xl px-4 py-6">
           <h1 className="font-display text-2xl font-bold sm:text-3xl">
             Fix Bengaluru&apos;s roads, together
           </h1>
