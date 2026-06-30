@@ -131,7 +131,7 @@ function Index() {
 
       {/* Map + list */}
       <div className="mx-auto grid w-full max-w-6xl flex-1 grid-cols-1 gap-0 lg:grid-cols-[1fr_380px]">
-        <div className="relative h-[45vh] min-h-[320px] lg:h-[calc(100vh-13.5rem)]">
+        <div className="relative h-[32vh] min-h-[240px] lg:h-[calc(100vh-20rem)]">
           <MapView reports={filtered} />
           <div className="pointer-events-none absolute bottom-3 left-3 z-[500] flex flex-wrap gap-2 rounded-lg bg-card/90 p-2 text-[11px] shadow-[var(--shadow-card)] backdrop-blur">
             {LEGEND.map((l) => (
