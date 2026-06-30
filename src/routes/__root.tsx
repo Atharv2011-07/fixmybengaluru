@@ -21,6 +21,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { BottomNav } from "@/components/BottomNav";
 import BlobCursor from "@/components/BlobCursor";
+import { fetchSettings } from "@/lib/settings";
 
 function NotFoundComponent() {
   return (
