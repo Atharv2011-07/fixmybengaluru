@@ -13,6 +13,9 @@ import { fetchReports } from "@/lib/reports";
 import { deleteReportAdmin, updateReportStatusAdmin } from "@/lib/admin.functions";
 import { fetchContact } from "@/lib/contact";
 import { updateContactAdmin } from "@/lib/contact.functions";
+import { fetchSettings, DEFAULT_SETTINGS } from "@/lib/settings";
+import { updateSettingsAdmin } from "@/lib/settings.functions";
+import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@/lib/useAuth";
 import { useIsAdmin } from "@/lib/useIsAdmin";
 import { Input } from "@/components/ui/input";
@@ -148,6 +151,8 @@ function AdminDashboard() {
         </p>
 
         <ContactEditor />
+
+        <SettingsEditor />
 
         {isLoading ? (
           <div className="grid place-items-center py-16 text-muted-foreground">
@@ -305,6 +310,107 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
     <div className="space-y-1.5">
       <Label>{label}</Label>
       {children}
+    </div>
+  );
+}
+
+function SettingsEditor() {
+  const qc = useQueryClient();
+  const update = useServerFn(updateSettingsAdmin);
+  const { data: settings, isLoading } = useQuery({ queryKey: ["site-settings"], queryFn: fetchSettings });
+
+  const [form, setForm] = useState(DEFAULT_SETTINGS);
+  const [saving, setSaving] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+
+  if (settings && !hydrated) {
+    setForm(settings);
+    setHydrated(true);
+  }
+
+  const num = (k: "map_height_px" | "map_width_px" | "map_mobile_vh") =>
+    (e: React.ChangeEvent<HTMLInputElement>) =>
+      setForm((f) => ({ ...f, [k]: Number(e.target.value) || 0 }));
+  const text = (k: "hero_title" | "hero_subtitle") =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setForm((f) => ({ ...f, [k]: e.target.value }));
+  const bool = (k: "show_legend" | "show_hero" | "show_dotfield" | "show_blobcursor") =>
+    (v: boolean) => setForm((f) => ({ ...f, [k]: v }));
+
+  const save = async () => {
+    setSaving(true);
+    try {
+      await update({
+        data: {
+          map_height_px: form.map_height_px,
+          map_width_px: form.map_width_px,
+          map_mobile_vh: form.map_mobile_vh,
+          show_legend: form.show_legend,
+          show_hero: form.show_hero,
+          show_dotfield: form.show_dotfield,
+          show_blobcursor: form.show_blobcursor,
+          hero_title: form.hero_title,
+          hero_subtitle: form.hero_subtitle,
+        },
+      });
+      toast.success("Site settings updated");
+      qc.invalidateQueries({ queryKey: ["site-settings"] });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed to update settings");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <section className="card-elevated mt-6 p-4">
+      <h2 className="font-display text-lg font-bold">Homepage & Map Settings</h2>
+      <p className="mt-0.5 text-sm text-muted-foreground">
+        Customise the map size and the homepage hero. Changes apply live for everyone.
+      </p>
+      {isLoading ? (
+        <div className="grid place-items-center py-8 text-muted-foreground">
+          <Loader2 className="size-5 animate-spin" />
+        </div>
+      ) : (
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <Field label="Map height — desktop (px)">
+            <Input type="number" min={200} max={1200} value={form.map_height_px} onChange={num("map_height_px")} />
+          </Field>
+          <Field label="Map width — desktop (px)">
+            <Input type="number" min={280} max={900} value={form.map_width_px} onChange={num("map_width_px")} />
+          </Field>
+          <Field label="Map height — mobile (vh)">
+            <Input type="number" min={20} max={90} value={form.map_mobile_vh} onChange={num("map_mobile_vh")} />
+          </Field>
+          <div className="hidden sm:block" />
+          <Toggle label="Show map legend" checked={form.show_legend} onChange={bool("show_legend")} />
+          <Toggle label="Show hero banner" checked={form.show_hero} onChange={bool("show_hero")} />
+          <Toggle label="Show dot-field effect" checked={form.show_dotfield} onChange={bool("show_dotfield")} />
+          <Toggle label="Show blob cursor" checked={form.show_blobcursor} onChange={bool("show_blobcursor")} />
+          <div className="sm:col-span-2">
+            <Field label="Hero title"><Input value={form.hero_title} onChange={text("hero_title")} /></Field>
+          </div>
+          <div className="sm:col-span-2">
+            <Field label="Hero subtitle"><Textarea value={form.hero_subtitle} onChange={text("hero_subtitle")} rows={2} /></Field>
+          </div>
+          <div className="sm:col-span-2">
+            <Button onClick={save} disabled={saving} className="gap-1.5">
+              {saving && <Loader2 className="size-4 animate-spin" />}
+              Save settings
+            </Button>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function Toggle({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <div className="flex items-center justify-between rounded-lg border border-border/70 px-3 py-2.5">
+      <Label className="cursor-pointer">{label}</Label>
+      <Switch checked={checked} onCheckedChange={onChange} />
     </div>
   );
 }

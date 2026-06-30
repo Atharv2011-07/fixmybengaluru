@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
@@ -21,6 +21,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { BottomNav } from "@/components/BottomNav";
 import BlobCursor from "@/components/BlobCursor";
+import { fetchSettings } from "@/lib/settings";
 
 function NotFoundComponent() {
   return (
@@ -172,8 +173,14 @@ function RootComponent() {
         <Outlet />
       </div>
       <BottomNav />
-      <BlobCursor global fillColor="#5227FF" zIndex={50} />
+      <GlobalBlobCursor />
       {mounted && <Toaster position="top-center" richColors />}
     </QueryClientProvider>
   );
+}
+
+function GlobalBlobCursor() {
+  const { data } = useQuery({ queryKey: ["site-settings"], queryFn: fetchSettings });
+  if (data && data.show_blobcursor === false) return null;
+  return <BlobCursor global fillColor="#5227FF" zIndex={50} />;
 }

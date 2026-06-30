@@ -258,6 +258,51 @@ export type Database = {
         }
         Relationships: []
       }
+      site_settings: {
+        Row: {
+          created_at: string
+          hero_subtitle: string
+          hero_title: string
+          id: string
+          map_height_px: number
+          map_mobile_vh: number
+          map_width_px: number
+          show_blobcursor: boolean
+          show_dotfield: boolean
+          show_hero: boolean
+          show_legend: boolean
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          hero_subtitle?: string
+          hero_title?: string
+          id?: string
+          map_height_px?: number
+          map_mobile_vh?: number
+          map_width_px?: number
+          show_blobcursor?: boolean
+          show_dotfield?: boolean
+          show_hero?: boolean
+          show_legend?: boolean
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          hero_subtitle?: string
+          hero_title?: string
+          id?: string
+          map_height_px?: number
+          map_mobile_vh?: number
+          map_width_px?: number
+          show_blobcursor?: boolean
+          show_dotfield?: boolean
+          show_hero?: boolean
+          show_legend?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
