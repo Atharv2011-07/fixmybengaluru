@@ -108,30 +108,9 @@ function Index() {
         </div>
       </section>
 
-      {/* Filters */}
-      <section className="border-b border-border/70 bg-card">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-4 py-3">
-          <div className="relative min-w-[180px] flex-1">
-            <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search road, area, ward, complaint ID…"
-              className="pl-8"
-            />
-          </div>
-          <FilterSelect value={area} onChange={setArea} placeholder="Area" allLabel="All areas"
-            options={BENGALURU_AREAS.map((a) => ({ value: a, label: a }))} />
-          <FilterSelect value={status} onChange={setStatus} placeholder="Status" allLabel="All statuses"
-            options={STATUS_ORDER.map((s) => ({ value: s, label: STATUS_CONFIG[s].label }))} />
-          <FilterSelect value={severity} onChange={setSeverity} placeholder="Severity" allLabel="All severity"
-            options={SEVERITY_ORDER.map((s) => ({ value: s, label: SEVERITY_CONFIG[s].label }))} />
-        </div>
-      </section>
-
       {/* Map + list */}
-      <div className="mx-auto grid w-full max-w-6xl flex-1 grid-cols-1 gap-0 lg:grid-cols-[1fr_380px]">
-        <div className="relative h-[32vh] min-h-[240px] lg:h-[calc(100vh-20rem)]">
+      <div className="mx-auto grid w-full max-w-6xl flex-1 grid-cols-1 gap-0 lg:grid-cols-[minmax(0,440px)_1fr]">
+        <div className="relative h-[32vh] min-h-[240px] lg:h-[480px]">
           <MapView reports={filtered} />
           <div className="pointer-events-none absolute bottom-3 left-3 z-[500] flex flex-wrap gap-2 rounded-lg bg-card/90 p-2 text-[11px] shadow-[var(--shadow-card)] backdrop-blur">
             {LEGEND.map((l) => (
@@ -143,7 +122,7 @@ function Index() {
           </div>
         </div>
 
-        <aside className="flex flex-col border-t border-border/70 lg:max-h-[calc(100vh-13.5rem)] lg:border-l lg:border-t-0">
+        <aside className="flex flex-col border-t border-border/70 lg:max-h-[480px] lg:border-l lg:border-t-0">
           <div className="flex items-center justify-between px-4 py-3">
             <p className="flex items-center gap-1.5 text-sm font-semibold">
               <Filter className="size-4 text-accent" /> {filtered.length} report{filtered.length === 1 ? "" : "s"}
@@ -172,6 +151,27 @@ function Index() {
           </div>
         </aside>
       </div>
+
+      {/* Filters / taskbar */}
+      <section className="border-t border-border/70 bg-card">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-4 py-3">
+          <div className="relative min-w-[180px] flex-1">
+            <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search road, area, ward, complaint ID…"
+              className="pl-8"
+            />
+          </div>
+          <FilterSelect value={area} onChange={setArea} placeholder="Area" allLabel="All areas"
+            options={BENGALURU_AREAS.map((a) => ({ value: a, label: a }))} />
+          <FilterSelect value={status} onChange={setStatus} placeholder="Status" allLabel="All statuses"
+            options={STATUS_ORDER.map((s) => ({ value: s, label: STATUS_CONFIG[s].label }))} />
+          <FilterSelect value={severity} onChange={setSeverity} placeholder="Severity" allLabel="All severity"
+            options={SEVERITY_ORDER.map((s) => ({ value: s, label: SEVERITY_CONFIG[s].label }))} />
+        </div>
+      </section>
     </div>
   );
 }
