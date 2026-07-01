@@ -22,7 +22,6 @@ import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import { Toaster } from "@/components/ui/sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { BottomNav } from "@/components/BottomNav";
 import BlobCursor from "@/components/BlobCursor";
 import { fetchSettings } from "@/lib/settings";
 
@@ -172,10 +171,9 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <div className="pb-16">
+      <div>
         <Outlet />
       </div>
-      <BottomNav />
       <GlobalBlobCursor />
       {mounted && <Toaster position="top-center" richColors />}
     </QueryClientProvider>
