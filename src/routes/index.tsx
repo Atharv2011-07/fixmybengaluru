@@ -157,24 +157,50 @@ function Index() {
         className="relative z-[60] mx-auto grid w-full max-w-6xl flex-1 grid-cols-1 gap-0 lg:[grid-template-columns:minmax(0,var(--map-w))_1fr]"
         style={{ ["--map-w" as string]: `${settings.map_width_px}px` }}
       >
-        <div
-          className="relative min-h-[240px] lg:!h-[var(--map-h)]"
-          style={{
-            height: `${settings.map_mobile_vh}vh`,
-            ["--map-h" as string]: `${settings.map_height_px}px`,
-          }}
-        >
-          <MapView reports={filtered} />
-          {settings.show_legend && (
-          <div className="pointer-events-none absolute bottom-3 left-3 z-[500] flex flex-wrap gap-2 rounded-lg bg-card/90 p-2 text-[11px] shadow-[var(--shadow-card)] backdrop-blur">
-            {LEGEND.map((l) => (
-              <span key={l.label} className="flex items-center gap-1">
-                <span className="size-2.5 rounded-full" style={{ background: l.color }} />
-                {l.label}
-              </span>
-            ))}
+        <div className="flex flex-col">
+          <div
+            className="relative min-h-[240px] lg:!h-[var(--map-h)]"
+            style={{
+              height: `${settings.map_mobile_vh}vh`,
+              ["--map-h" as string]: `${settings.map_height_px}px`,
+            }}
+          >
+            <MapView reports={filtered} />
+            {settings.show_legend && (
+            <div className="pointer-events-none absolute bottom-3 left-3 z-[500] flex flex-wrap gap-2 rounded-lg bg-card/90 p-2 text-[11px] shadow-[var(--shadow-card)] backdrop-blur">
+              {LEGEND.map((l) => (
+                <span key={l.label} className="flex items-center gap-1">
+                  <span className="size-2.5 rounded-full" style={{ background: l.color }} />
+                  {l.label}
+                </span>
+              ))}
+            </div>
+            )}
           </div>
-          )}
+
+          {/* Search / filters — placed right below the map, gradient background */}
+          <section
+            className="border-t border-border/70 bg-cover bg-center"
+            style={{ backgroundImage: "url('/bg-gradient.svg')" }}
+          >
+            <div className="flex flex-wrap items-center gap-2 px-4 py-3">
+              <div className="relative min-w-[160px] flex-1">
+                <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search road, area, ward, complaint ID…"
+                  className="pl-8"
+                />
+              </div>
+              <FilterSelect value={area} onChange={setArea} placeholder="Area" allLabel="All areas"
+                options={BENGALURU_AREAS.map((a) => ({ value: a, label: a }))} />
+              <FilterSelect value={status} onChange={setStatus} placeholder="Status" allLabel="All statuses"
+                options={STATUS_ORDER.map((s) => ({ value: s, label: STATUS_CONFIG[s].label }))} />
+              <FilterSelect value={severity} onChange={setSeverity} placeholder="Severity" allLabel="All severity"
+                options={SEVERITY_ORDER.map((s) => ({ value: s, label: SEVERITY_CONFIG[s].label }))} />
+            </div>
+          </section>
         </div>
 
         <aside
@@ -209,27 +235,6 @@ function Index() {
           </div>
         </aside>
       </div>
-
-      {/* Filters / taskbar */}
-      <section className="border-t border-border/70 bg-card">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-4 py-3">
-          <div className="relative min-w-[180px] flex-1">
-            <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search road, area, ward, complaint ID…"
-              className="pl-8"
-            />
-          </div>
-          <FilterSelect value={area} onChange={setArea} placeholder="Area" allLabel="All areas"
-            options={BENGALURU_AREAS.map((a) => ({ value: a, label: a }))} />
-          <FilterSelect value={status} onChange={setStatus} placeholder="Status" allLabel="All statuses"
-            options={STATUS_ORDER.map((s) => ({ value: s, label: STATUS_CONFIG[s].label }))} />
-          <FilterSelect value={severity} onChange={setSeverity} placeholder="Severity" allLabel="All severity"
-            options={SEVERITY_ORDER.map((s) => ({ value: s, label: SEVERITY_CONFIG[s].label }))} />
-        </div>
-      </section>
     </div>
   );
 }
