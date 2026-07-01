@@ -169,7 +169,7 @@
   }
 
   body {
-    background-color: var(--color-background);
+    background-color: transparent;
     color: var(--color-foreground);
     -webkit-font-smoothing: antialiased;
     position: relative;
