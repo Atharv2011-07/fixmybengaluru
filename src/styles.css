@@ -171,6 +171,10 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    background-image:
+      radial-gradient(1200px 600px at 100% -10%, oklch(0.6 0.12 250 / 0.14), transparent 60%),
+      radial-gradient(900px 500px at -10% 0%, oklch(0.6 0.18 25 / 0.08), transparent 55%);
+    background-attachment: fixed;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -192,6 +196,12 @@
   }
   .bg-gradient-amber {
     background-image: var(--gradient-amber);
+  }
+  /* Frosted glass surface — Air's signature elevation via blur, not shadow. */
+  .glass {
+    background-color: color-mix(in oklab, var(--color-card) 70%, transparent);
+    backdrop-filter: blur(12px) saturate(140%);
+    border: 1px solid color-mix(in oklab, var(--color-border) 80%, transparent);
   }
 }
 
