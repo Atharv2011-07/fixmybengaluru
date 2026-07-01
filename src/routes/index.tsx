@@ -178,29 +178,6 @@ function Index() {
             )}
           </div>
 
-          {/* Search / filters — placed right below the map, gradient background */}
-          <section
-            className="border-t border-border/70 bg-cover bg-center"
-            style={{ backgroundImage: "url('/bg-gradient.svg')" }}
-          >
-            <div className="flex flex-wrap items-center gap-2 px-4 py-3">
-              <div className="relative min-w-[160px] flex-1">
-                <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search road, area, ward, complaint ID…"
-                  className="pl-8"
-                />
-              </div>
-              <FilterSelect value={area} onChange={setArea} placeholder="Area" allLabel="All areas"
-                options={BENGALURU_AREAS.map((a) => ({ value: a, label: a }))} />
-              <FilterSelect value={status} onChange={setStatus} placeholder="Status" allLabel="All statuses"
-                options={STATUS_ORDER.map((s) => ({ value: s, label: STATUS_CONFIG[s].label }))} />
-              <FilterSelect value={severity} onChange={setSeverity} placeholder="Severity" allLabel="All severity"
-                options={SEVERITY_ORDER.map((s) => ({ value: s, label: SEVERITY_CONFIG[s].label }))} />
-            </div>
-          </section>
         </div>
 
         <aside
