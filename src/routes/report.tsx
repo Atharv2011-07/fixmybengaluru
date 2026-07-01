@@ -38,7 +38,9 @@ import {
   SEVERITY_CONFIG,
   SEVERITY_ORDER,
   type Severity,
+  buildBbmpWhatsAppUrl,
 } from "@/lib/constants";
+import { incrementWspComplaintCount } from "@/lib/profileStats";
 
 export const Route = createFileRoute("/report")({
   head: () => ({ meta: [{ title: "Report a Pothole — Pothole Bengaluru" }] }),
@@ -187,7 +189,15 @@ function ReportPage() {
         },
         user?.id ?? null,
       );
-      toast.success(`Report submitted — ${report.complaint_id}`);
+      // Reporting to BBMP on WhatsApp is compulsory — open it automatically.
+      const waUrl = buildBbmpWhatsAppUrl(report);
+      incrementWspComplaintCount();
+      const win = window.open(waUrl, "_blank", "noopener,noreferrer");
+      if (!win) {
+        // Popup blocked — fall back to a direct navigation so WhatsApp still opens.
+        window.location.href = waUrl;
+      }
+      toast.success(`Report submitted — ${report.complaint_id}. Send it on WhatsApp to complete.`);
       navigate({ to: "/reports/$id", params: { id: report.id } });
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed to submit report");
@@ -339,8 +349,11 @@ function ReportPage() {
         <div className="sticky bottom-0 -mx-4 border-t border-border bg-background/95 px-4 py-3 backdrop-blur">
           <Button onClick={submit} disabled={submitting} size="lg" className="w-full gap-2">
             {submitting && <Loader2 className="size-4 animate-spin" />}
-            Submit report
+            Submit & report on WhatsApp
           </Button>
+          <p className="mt-2 text-center text-xs text-muted-foreground">
+            Reports are filed to BBMP via WhatsApp — hitting submit opens a pre-filled complaint. Just press send.
+          </p>
         </div>
       </main>
     </div>
