@@ -1,7 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Filter, Plus, Search } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Filter,
+  MapPin,
+  Plus,
+  Search,
+} from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { MapView } from "@/components/map/MapView";
 import DotField from "@/components/DotField";
@@ -92,6 +101,33 @@ function Index() {
       {intro && <CityIntro onDone={() => setIntro(false)} />}
       <AppHeader />
       <LocationBanner />
+
+      {/* Report centerpiece — Google-search-style focal CTA */}
+      <section className="relative flex flex-col items-center justify-center px-4 py-16 text-center sm:py-24">
+        <h1 className="font-display text-3xl font-bold text-foreground drop-shadow-sm sm:text-5xl">
+          Spotted a pothole?
+        </h1>
+        <p className="mt-3 max-w-md text-sm text-foreground/80 sm:text-base">
+          Report it in seconds. Every report goes straight to the map and to the ward officials.
+        </p>
+
+        <div className="relative mt-12 flex items-center justify-center">
+          {/* Animated arrows pointing towards the button */}
+          <ArrowRight className="report-arrow a-left absolute -left-16 size-9 text-primary sm:-left-24 sm:size-12" strokeWidth={2.5} />
+          <ArrowLeft className="report-arrow a-right absolute -right-16 size-9 text-primary sm:-right-24 sm:size-12" strokeWidth={2.5} />
+          <ArrowDown className="report-arrow a-top absolute -top-14 size-9 text-primary sm:size-12" strokeWidth={2.5} />
+          <ArrowUp className="report-arrow a-bottom absolute -bottom-14 size-9 text-primary sm:size-12" strokeWidth={2.5} />
+
+          <Button
+            asChild
+            className="report-cta h-auto rounded-2xl px-10 py-6 text-lg font-bold sm:px-16 sm:py-8 sm:text-2xl"
+          >
+            <Link to="/report">
+              <MapPin className="size-6 sm:size-8" /> Report a Pothole
+            </Link>
+          </Button>
+        </div>
+      </section>
 
       {/* Hero stats */}
       {settings.show_hero && (
