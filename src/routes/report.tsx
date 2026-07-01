@@ -189,7 +189,15 @@ function ReportPage() {
         },
         user?.id ?? null,
       );
-      toast.success(`Report submitted — ${report.complaint_id}`);
+      // Reporting to BBMP on WhatsApp is compulsory — open it automatically.
+      const waUrl = buildBbmpWhatsAppUrl(report);
+      incrementWspComplaintCount();
+      const win = window.open(waUrl, "_blank", "noopener,noreferrer");
+      if (!win) {
+        // Popup blocked — fall back to a direct navigation so WhatsApp still opens.
+        window.location.href = waUrl;
+      }
+      toast.success(`Report submitted — ${report.complaint_id}. Send it on WhatsApp to complete.`);
       navigate({ to: "/reports/$id", params: { id: report.id } });
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed to submit report");
