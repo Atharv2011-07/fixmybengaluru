@@ -25,6 +25,7 @@ export function MapView({ reports }: { reports: PotholeReport[] }) {
   const mapRef = useRef<google.maps.Map | null>(null);
   const markersRef = useRef<google.maps.Marker[]>([]);
   const infoRef = useRef<google.maps.InfoWindow | null>(null);
+  const hasFitRef = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -63,11 +64,16 @@ export function MapView({ reports }: { reports: PotholeReport[] }) {
         bounds.extend({ lat: r.latitude, lng: r.longitude });
       });
 
-      if (reports.length === 1) {
-        map.setCenter({ lat: reports[0].latitude, lng: reports[0].longitude });
-        map.setZoom(16);
-      } else if (reports.length > 1) {
-        map.fitBounds(bounds, 48);
+      // Only auto-frame the map once so filtering/searching doesn't make the
+      // viewport jump ("glitch") on every keystroke.
+      if (!hasFitRef.current && reports.length > 0) {
+        if (reports.length === 1) {
+          map.setCenter({ lat: reports[0].latitude, lng: reports[0].longitude });
+          map.setZoom(16);
+        } else {
+          map.fitBounds(bounds, 48);
+        }
+        hasFitRef.current = true;
       }
     });
     return () => {
