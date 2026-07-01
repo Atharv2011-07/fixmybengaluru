@@ -288,3 +288,23 @@
   font-size: 0.8rem;
   color: oklch(0.4 0.16 265);
 }
+
+/* Report CTA — Google-search-style centerpiece with animated pointing arrows */
+@keyframes report-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 20px 60px -18px oklch(0.56 0.24 27 / 0.7); }
+  50% { transform: scale(1.04); box-shadow: 0 28px 80px -14px oklch(0.56 0.24 27 / 0.9); }
+}
+.report-cta {
+  animation: report-pulse 2.4s ease-in-out infinite;
+}
+@keyframes arrow-poke {
+  0%, 100% { transform: translate(0, 0); opacity: 0.55; }
+  50% { transform: translate(var(--ax, 0), var(--ay, 0)); opacity: 1; }
+}
+.report-arrow {
+  animation: arrow-poke 1.3s ease-in-out infinite;
+}
+.report-arrow.a-left   { --ax: 10px;  --ay: 0; }
+.report-arrow.a-right  { --ax: -10px; --ay: 0; }
+.report-arrow.a-top    { --ax: 0; --ay: 10px; }
+.report-arrow.a-bottom { --ax: 0; --ay: -10px; }
