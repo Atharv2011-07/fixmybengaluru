@@ -207,7 +207,7 @@ function ReportPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <AppHeader />
       <main className="mx-auto max-w-2xl px-4 py-6">
         <h1 className="font-display text-2xl font-bold">Report a pothole</h1>

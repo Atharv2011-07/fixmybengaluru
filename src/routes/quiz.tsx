@@ -88,7 +88,7 @@ function QuizPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen flex-col">
       <AppHeader />
       <section className="relative overflow-hidden border-b border-border/70 bg-gradient-hero text-primary-foreground">
         <div className="pointer-events-none absolute inset-0 opacity-70">
