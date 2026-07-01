@@ -49,7 +49,7 @@ export const Route = createFileRoute("/developer")({
 
 function Gate({ icon, title, message, action }: { icon: React.ReactNode; title: string; message: string; action?: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <AppHeader />
       <div className="mx-auto max-w-md px-4 py-24 text-center">
         <div className="mx-auto grid size-14 place-items-center rounded-2xl bg-destructive/10 text-destructive">
@@ -69,7 +69,7 @@ function DeveloperZone() {
 
   if (authLoading || (user && adminLoading)) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen">
         <AppHeader />
         <div className="grid place-items-center py-24 text-muted-foreground">
           <Loader2 className="size-6 animate-spin" />
@@ -139,7 +139,7 @@ function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <AppHeader />
       <main className="mx-auto max-w-4xl px-4 py-6">
         <div className="flex items-center gap-2">

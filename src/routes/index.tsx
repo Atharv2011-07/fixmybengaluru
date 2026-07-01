@@ -88,7 +88,7 @@ function Index() {
   }, [reports]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen flex-col">
       {intro && <CityIntro onDone={() => setIntro(false)} />}
       <AppHeader />
       <LocationBanner />
@@ -118,7 +118,7 @@ function Index() {
 
       {/* Map + list */}
       <div
-        className="relative z-[60] mx-auto grid w-full max-w-6xl flex-1 grid-cols-1 gap-0 bg-background lg:[grid-template-columns:minmax(0,var(--map-w))_1fr]"
+        className="relative z-[60] mx-auto grid w-full max-w-6xl flex-1 grid-cols-1 gap-0 lg:[grid-template-columns:minmax(0,var(--map-w))_1fr]"
         style={{ ["--map-w" as string]: `${settings.map_width_px}px` }}
       >
         <div
