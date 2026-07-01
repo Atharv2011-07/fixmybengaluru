@@ -330,7 +330,7 @@ function ReportPage() {
             {locating ? <Loader2 className="size-4 animate-spin" /> : <LocateFixed className="size-4" />}
             Use my location
           </Button>
-          <div className="relative z-[60] mt-3 h-64 overflow-hidden rounded-lg border border-border bg-background">
+          <div className="relative z-0 mt-3 h-64 overflow-hidden rounded-lg border border-border bg-background">
             <LocationPicker value={coords} onChange={handlePinChange} />
           </div>
           {coords && (
@@ -346,7 +346,7 @@ function ReportPage() {
           </div>
         </Section>
 
-        <div className="sticky bottom-0 -mx-4 border-t border-border bg-background/95 px-4 py-3 backdrop-blur">
+        <div className="sticky bottom-0 z-[70] -mx-4 border-t border-border bg-background/95 px-4 py-3 backdrop-blur">
           <Button onClick={submit} disabled={submitting} size="lg" className="w-full gap-2">
             {submitting && <Loader2 className="size-4 animate-spin" />}
             Submit & report on WhatsApp
