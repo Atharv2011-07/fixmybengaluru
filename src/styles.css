@@ -175,22 +175,17 @@
     position: relative;
   }
 
-  /* Day sky: real photographic cloudscape */
+  /* Blurry red/black gradient canvas */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background-image: url("/sky-day.jpg");
+    background-image: url("/bg-gradient.svg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-  }
-
-  /* Night sky: moonlit cloudscape */
-  .dark body::before {
-    background-image: url("/sky-night.jpg");
   }
 
   h1, h2, h3, h4, .font-display {
