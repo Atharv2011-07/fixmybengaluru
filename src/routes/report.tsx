@@ -38,7 +38,9 @@ import {
   SEVERITY_CONFIG,
   SEVERITY_ORDER,
   type Severity,
+  buildBbmpWhatsAppUrl,
 } from "@/lib/constants";
+import { incrementWspComplaintCount } from "@/lib/profileStats";
 
 export const Route = createFileRoute("/report")({
   head: () => ({ meta: [{ title: "Report a Pothole — Pothole Bengaluru" }] }),
