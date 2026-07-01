@@ -349,8 +349,11 @@ function ReportPage() {
         <div className="sticky bottom-0 -mx-4 border-t border-border bg-background/95 px-4 py-3 backdrop-blur">
           <Button onClick={submit} disabled={submitting} size="lg" className="w-full gap-2">
             {submitting && <Loader2 className="size-4 animate-spin" />}
-            Submit report
+            Submit & report on WhatsApp
           </Button>
+          <p className="mt-2 text-center text-xs text-muted-foreground">
+            Reports are filed to BBMP via WhatsApp — hitting submit opens a pre-filled complaint. Just press send.
+          </p>
         </div>
       </main>
     </div>
