@@ -1,5 +1,13 @@
 export const BENGALURU_CENTER = { lat: 12.9716, lng: 77.5946 };
 
+// Reports imported from the official BBMP potholes dashboard use this exact
+// reporter_name so they can be flagged with a "Government / Official" badge.
+export const GOV_REPORTER_NAME = "BBMP – Official Record";
+
+export function isOfficialReport(report: { reporter_name?: string | null }): boolean {
+  return report.reporter_name === GOV_REPORTER_NAME;
+}
+
 export type Severity = "minor" | "moderate" | "severe" | "dangerous";
 export type ReportStatus =
   | "submitted"
