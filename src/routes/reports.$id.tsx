@@ -26,7 +26,7 @@ import {
   toggleVote,
 } from "@/lib/reports";
 import { STATUS_CONFIG, STATUS_ORDER } from "@/lib/constants";
-import { buildBbmpWhatsAppUrl } from "@/lib/constants";
+import { buildBbmpWhatsAppUrl, isOfficialReport } from "@/lib/constants";
 import { useAuth } from "@/lib/useAuth";
 import { incrementWspComplaintCount } from "@/lib/profileStats";
 
