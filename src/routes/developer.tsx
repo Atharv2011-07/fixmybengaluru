@@ -185,6 +185,7 @@ function AdminDashboard() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
+                  <ReportImagesDialog reportId={r.id} imageUrls={r.image_urls ?? []} />
                   <Select
                     value={r.status}
                     onValueChange={(v) => handleStatusChange(r.id, v as ReportStatus)}
