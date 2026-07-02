@@ -423,3 +423,125 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
     </div>
   );
 }
+
+function ReportImagesDialog({ reportId, imageUrls }: { reportId: string; imageUrls: string[] }) {
+  const qc = useQueryClient();
+  const { user } = useAuth();
+  const updateImages = useServerFn(updateReportImagesAdmin);
+  const [open, setOpen] = useState(false);
+  const [paths, setPaths] = useState<string[]>(imageUrls);
+  const [removed, setRemoved] = useState<string[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  // Sign the current paths for preview whenever the dialog is open.
+  const { data: signed = [] } = useQuery({
+    queryKey: ["dev-images", reportId, paths],
+    queryFn: () => signImageUrls(paths),
+    enabled: open && paths.length > 0,
+  });
+
+  const openDialog = () => {
+    setPaths(imageUrls);
+    setRemoved([]);
+    setOpen(true);
+  };
+
+  const handleAdd = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? []);
+    e.target.value = "";
+    if (!files.length) return;
+    setUploading(true);
+    try {
+      const newPaths = await uploadPotholeImages(files, user?.id ?? null);
+      setPaths((p) => [...p, ...newPaths]);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const removeAt = (idx: number) => {
+    setPaths((p) => {
+      const path = p[idx];
+      // Only schedule deletion for images that were already saved on the report.
+      if (imageUrls.includes(path)) setRemoved((r) => [...r, path]);
+      return p.filter((_, i) => i !== idx);
+    });
+  };
+
+  const save = async () => {
+    setSaving(true);
+    try {
+      await updateImages({ data: { reportId, imageUrls: paths, removePaths: removed } });
+      toast.success("Report images updated");
+      qc.invalidateQueries({ queryKey: ["reports"] });
+      qc.invalidateQueries({ queryKey: ["images", reportId] });
+      qc.invalidateQueries({ queryKey: ["thumb", reportId] });
+      setOpen(false);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to update images");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={(v) => (v ? openDialog() : setOpen(false))}>
+      <DialogTrigger asChild>
+        <Button variant="outline" size="sm" className="gap-1.5">
+          <ImageIcon className="size-4" />
+          Images
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="z-[1200]">
+        <DialogHeader>
+          <DialogTitle>Manage report images</DialogTitle>
+          <DialogDescription>Add or remove photos for this report. Changes are saved live.</DialogDescription>
+        </DialogHeader>
+
+        {paths.length === 0 ? (
+          <p className="py-4 text-center text-sm text-muted-foreground">No images yet.</p>
+        ) : (
+          <div className="grid grid-cols-3 gap-2">
+            {paths.map((path, i) => (
+              <div key={path} className="group relative aspect-square overflow-hidden rounded-lg border border-border/70 bg-muted">
+                {signed[i] ? (
+                  <img src={signed[i]} alt="" className="size-full object-cover" />
+                ) : (
+                  <div className="grid size-full place-items-center text-muted-foreground">
+                    <Loader2 className="size-4 animate-spin" />
+                  </div>
+                )}
+                <button
+                  type="button"
+                  onClick={() => removeAt(i)}
+                  className="absolute right-1 top-1 grid size-6 place-items-center rounded-full bg-destructive text-destructive-foreground opacity-90"
+                  aria-label="Remove image"
+                >
+                  <X className="size-3.5" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="mt-2 flex items-center gap-2">
+          <label className="inline-flex">
+            <input type="file" accept="image/*" multiple className="hidden" onChange={handleAdd} disabled={uploading} />
+            <span className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-border px-3 py-2 text-sm font-medium hover:bg-muted">
+              {uploading ? <Loader2 className="size-4 animate-spin" /> : <Upload className="size-4" />}
+              Add images
+            </span>
+          </label>
+          <div className="flex-1" />
+          <Button onClick={save} disabled={saving || uploading} className="gap-1.5">
+            {saving && <Loader2 className="size-4 animate-spin" />}
+            Save
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
