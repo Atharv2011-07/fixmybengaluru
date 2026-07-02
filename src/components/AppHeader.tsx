@@ -16,7 +16,7 @@ import {
 
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
-  { label: "Shame", href: "/hall-of-shame" },
+  { label: "List", href: "/hall-of-shame" },
   { label: "Community", href: "/community" },
   { label: "Quiz", href: "/quiz" },
   { label: "Contact", href: "/contact" },
