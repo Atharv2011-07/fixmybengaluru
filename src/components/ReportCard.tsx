@@ -4,7 +4,9 @@ import { ArrowUp, ImageOff, MapPin, AlertTriangle } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { SeverityBadge } from "./SeverityBadge";
 import { StatusBadge } from "./StatusBadge";
+import { OfficialBadge } from "./OfficialBadge";
 import { signImageUrls, type PotholeReport } from "@/lib/reports";
+import { isOfficialReport } from "@/lib/constants";
 
 export function ReportCard({ report }: { report: PotholeReport }) {
   const { data: imgs } = useQuery({
@@ -39,6 +41,7 @@ export function ReportCard({ report }: { report: PotholeReport }) {
         <div className="flex items-center gap-1.5">
           <SeverityBadge severity={report.severity} />
           <StatusBadge status={report.status} />
+          {isOfficialReport(report) && <OfficialBadge />}
         </div>
         <p className="mt-1 truncate font-display text-sm font-semibold">
           {report.road_name || report.area || "Pothole report"}

@@ -15,6 +15,7 @@ import { format, formatDistanceToNow } from "date-fns";
 import { AppHeader } from "@/components/AppHeader";
 import { SeverityBadge } from "@/components/SeverityBadge";
 import { StatusBadge } from "@/components/StatusBadge";
+import { OfficialBadge } from "@/components/OfficialBadge";
 import { MapView } from "@/components/map/MapView";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,7 +26,7 @@ import {
   toggleVote,
 } from "@/lib/reports";
 import { STATUS_CONFIG, STATUS_ORDER } from "@/lib/constants";
-import { buildBbmpWhatsAppUrl } from "@/lib/constants";
+import { buildBbmpWhatsAppUrl, isOfficialReport } from "@/lib/constants";
 import { useAuth } from "@/lib/useAuth";
 import { incrementWspComplaintCount } from "@/lib/profileStats";
 
@@ -118,6 +119,7 @@ function ReportDetail() {
             <div className="mt-2 flex flex-wrap items-center gap-1.5">
               <SeverityBadge severity={report.severity} />
               <StatusBadge status={report.status} />
+              {isOfficialReport(report) && <OfficialBadge />}
               {report.is_emergency && (
                 <span className="inline-flex items-center gap-1 rounded-full border border-destructive/40 bg-destructive/15 px-2.5 py-0.5 text-xs font-semibold text-destructive">
                   <AlertTriangle className="size-3" /> Emergency
