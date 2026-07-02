@@ -72,3 +72,34 @@ export const updateReportStatusAdmin = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+export const updateReportImagesAdmin = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { reportId: string; imageUrls: string[]; removePaths?: string[] }) => {
+    if (!data?.reportId) throw new Error("reportId is required");
+    if (!Array.isArray(data.imageUrls)) throw new Error("imageUrls must be an array");
+    return data;
+  })
+  .handler(async ({ data, context }): Promise<{ ok: true }> => {
+    const { data: isAdmin, error: roleErr } = await context.supabase.rpc("has_role", {
+      _user_id: context.userId,
+      _role: "admin",
+    });
+    if (roleErr) throw new Error(roleErr.message);
+    if (!isAdmin) throw new Error("Forbidden: admin access required");
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    // Remove any storage objects the admin dropped.
+    const removePaths = (data.removePaths ?? []).filter(Boolean);
+    if (removePaths.length) {
+      await supabaseAdmin.storage.from("pothole-images").remove(removePaths);
+    }
+
+    const { error } = await supabaseAdmin
+      .from("reports")
+      .update({ image_urls: data.imageUrls })
+      .eq("id", data.reportId);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
