@@ -3,14 +3,14 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Loader2, ShieldAlert, Trash2, ArrowUp, Lock } from "lucide-react";
+import { Loader2, ShieldAlert, Trash2, ArrowUp, Lock, ImageIcon, X, Upload } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { AppHeader } from "@/components/AppHeader";
 import { Button } from "@/components/ui/button";
 import { SeverityBadge } from "@/components/SeverityBadge";
 import { StatusBadge } from "@/components/StatusBadge";
-import { fetchReports } from "@/lib/reports";
-import { deleteReportAdmin, updateReportStatusAdmin } from "@/lib/admin.functions";
+import { fetchReports, signImageUrls, uploadPotholeImages } from "@/lib/reports";
+import { deleteReportAdmin, updateReportStatusAdmin, updateReportImagesAdmin } from "@/lib/admin.functions";
 import { fetchContact } from "@/lib/contact";
 import { updateContactAdmin } from "@/lib/contact.functions";
 import { fetchSettings, DEFAULT_SETTINGS } from "@/lib/settings";
@@ -29,6 +29,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { STATUS_CONFIG, STATUS_ORDER, type ReportStatus } from "@/lib/constants";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogФooterPlaceholder,
+} from "@/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogAction,
