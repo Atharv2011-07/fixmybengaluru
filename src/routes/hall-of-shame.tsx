@@ -23,6 +23,8 @@ export const Route = createFileRoute("/hall-of-shame")({
 interface Row {
   constituency: string;
   representative: string;
+  mp: string;
+  mpConstituency: string;
   open: number;
   total: number;
   resolved: number;
@@ -45,6 +47,8 @@ function HallOfShame() {
         {
           constituency: info.constituency,
           representative: info.representative,
+          mp: info.mp,
+          mpConstituency: info.mpConstituency,
           open: 0,
           total: 0,
           resolved: 0,
@@ -97,7 +101,9 @@ function HallOfShame() {
                   <Trophy className="size-3.5" /> Most potholes right now
                 </p>
                 <p className="mt-1 font-display text-2xl font-bold">{worst.constituency}</p>
-                <p className="text-sm text-muted-foreground">Represented by {worst.representative}</p>
+                <p className="text-sm text-muted-foreground">
+                  MLA {worst.representative} · MP {worst.mp} ({worst.mpConstituency})
+                </p>
                 <p className="mt-2 text-sm">
                   <span className="font-bold text-destructive">{worst.open}</span> unresolved ·{" "}
                   {worst.total} total reports
@@ -125,7 +131,7 @@ function HallOfShame() {
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-semibold">{row.constituency}</p>
                     <p className="flex items-center gap-1 truncate text-xs text-muted-foreground">
-                      <MapPin className="size-3" /> {row.representative}
+                      <MapPin className="size-3" /> MLA {row.representative} · MP {row.mp}
                     </p>
                   </div>
                   <div className="text-right">
