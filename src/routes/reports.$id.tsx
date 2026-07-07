@@ -270,6 +270,28 @@ function Meta({ label, value }: { label: string; value: string | null }) {
   );
 }
 
+function AccountabilityCell({
+  icon,
+  tier,
+  name,
+  sub,
+}: {
+  icon: React.ReactNode;
+  tier: string;
+  name: string;
+  sub: string;
+}) {
+  return (
+    <div className="rounded-xl border border-border bg-muted/30 p-3">
+      <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-accent">
+        {icon} {tier}
+      </p>
+      <p className="mt-1 font-display text-sm font-bold leading-snug">{name}</p>
+      <p className="text-xs text-muted-foreground">{sub}</p>
+    </div>
+  );
+}
+
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
