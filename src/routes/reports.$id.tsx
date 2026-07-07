@@ -10,6 +10,9 @@ import {
   Loader2,
   MapPin,
   Sparkles,
+  Landmark,
+  Building2,
+  User,
 } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
 import { AppHeader } from "@/components/AppHeader";
@@ -26,7 +29,7 @@ import {
   toggleVote,
 } from "@/lib/reports";
 import { STATUS_CONFIG, STATUS_ORDER } from "@/lib/constants";
-import { buildBbmpWhatsAppUrl, isOfficialReport } from "@/lib/constants";
+import { buildBbmpWhatsAppUrl, isOfficialReport, constituencyForArea } from "@/lib/constants";
 import { useAuth } from "@/lib/useAuth";
 import { incrementWspComplaintCount } from "@/lib/profileStats";
 
@@ -101,6 +104,7 @@ function ReportDetail() {
   }
 
   const currentStep = STATUS_CONFIG[report.status].step;
+  const accountability = constituencyForArea(report.area);
 
   return (
     <div className="min-h-screen">
@@ -181,6 +185,41 @@ function ReportDetail() {
         </div>
 
         {/* Timeline */}
+        <div className="card-elevated mt-4 p-4">
+        </div>
+
+        {/* Accountability — who is responsible */}
+        <div className="card-elevated mt-4 p-4">
+          <h2 className="font-display text-base font-semibold">Who is responsible</h2>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            This pothole falls under the following ward and elected representatives.
+          </p>
+          <div className="mt-3 grid gap-2 sm:grid-cols-3">
+            <AccountabilityCell
+              icon={<Landmark className="size-4" />}
+              tier="Ward"
+              name={accountability.ward}
+              sub="BBMP civic ward"
+            />
+            <AccountabilityCell
+              icon={<User className="size-4" />}
+              tier="MLA"
+              name={accountability.representative}
+              sub={accountability.constituency}
+            />
+            <AccountabilityCell
+              icon={<Building2 className="size-4" />}
+              tier="MP"
+              name={accountability.mp}
+              sub={accountability.mpConstituency}
+            />
+          </div>
+          <p className="mt-3 text-[11px] text-muted-foreground">
+            Mapping is indicative, based on the reported area.
+          </p>
+        </div>
+
+        {/* Timeline (hidden placeholder removed) */}
         <div className="card-elevated mt-4 p-4">
           <h2 className="font-display text-base font-semibold">Repair timeline</h2>
           <div className="mt-3 space-y-0">
