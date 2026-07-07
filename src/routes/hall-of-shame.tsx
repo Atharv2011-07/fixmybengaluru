@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Loader2, Skull, Trophy, MapPin, ArrowLeft } from "lucide-react";
+import { Loader2, Skull, Trophy, ChevronRight, ArrowLeft } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { fetchReports } from "@/lib/reports";
 import { constituencyForArea } from "@/lib/constants";
@@ -111,38 +111,26 @@ function HallOfShame() {
               </div>
             )}
 
-            <ol className="mt-5 space-y-2">
+            <ol className="mt-5 overflow-hidden rounded-2xl border border-border bg-card">
               {rows.map((row, i) => (
                 <li
                   key={row.constituency}
-                  className="flex items-center gap-3 rounded-xl border border-border bg-card p-3.5"
+                  className="flex items-center gap-3 border-b border-border px-3 py-3 last:border-b-0"
                 >
-                  <span
-                    className={`grid size-9 shrink-0 place-items-center rounded-lg font-display text-sm font-bold ${
-                      i === 0
-                        ? "bg-destructive/15 text-destructive"
-                        : i < 3
-                          ? "bg-warning/20 text-warning-foreground"
-                          : "bg-muted text-muted-foreground"
-                    }`}
-                  >
-                    {i + 1}
+                  <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-destructive/10 font-display text-base font-bold text-destructive">
+                    {row.total}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate font-semibold">{row.constituency}</p>
-                    <p className="flex items-center gap-1 truncate text-xs text-muted-foreground">
-                      <MapPin className="size-3" /> MLA {row.representative} · MP {row.mp}
+                    <p className="flex items-baseline gap-2 truncate">
+                      <span className="font-semibold">{row.constituency}</span>
+                      <span className="font-mono text-xs text-muted-foreground">#{i + 1}</span>
+                    </p>
+                    <p className="truncate text-sm text-muted-foreground">
+                      <span className="font-medium text-foreground/80">{row.open} unresolved</span>{" "}
+                      · {row.representative}
                     </p>
                   </div>
-                  <div className="text-right">
-                    <p className="font-display text-xl font-bold leading-none">{row.open}</p>
-                    <p className="text-[11px] text-muted-foreground">unresolved</p>
-                  </div>
-                  {row.emergencies > 0 && (
-                    <span className="rounded-full border border-destructive/40 bg-destructive/10 px-2 py-0.5 text-[11px] font-semibold text-destructive">
-                      {row.emergencies} 🚨
-                    </span>
-                  )}
+                  <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
                 </li>
               ))}
             </ol>
