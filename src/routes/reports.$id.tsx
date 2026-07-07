@@ -184,10 +184,6 @@ function ReportDetail() {
           </div>
         </div>
 
-        {/* Timeline */}
-        <div className="card-elevated mt-4 p-4">
-        </div>
-
         {/* Accountability — who is responsible */}
         <div className="card-elevated mt-4 p-4">
           <h2 className="font-display text-base font-semibold">Who is responsible</h2>
@@ -219,7 +215,7 @@ function ReportDetail() {
           </p>
         </div>
 
-        {/* Timeline (hidden placeholder removed) */}
+        {/* Timeline */}
         <div className="card-elevated mt-4 p-4">
           <h2 className="font-display text-base font-semibold">Repair timeline</h2>
           <div className="mt-3 space-y-0">
