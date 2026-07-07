@@ -189,28 +189,71 @@ export function buildBbmpWhatsAppUrl(report: {
 export interface ConstituencyInfo {
   constituency: string;
   representative: string;
+  ward: string;
+  mp: string;
+  mpConstituency: string;
 }
 
-export const AREA_CONSTITUENCY: Record<string, ConstituencyInfo> = {
-  Koramangala: { constituency: "BTM Layout", representative: "Ramalinga Reddy" },
-  Indiranagar: { constituency: "C.V. Raman Nagar", representative: "S. Raghu" },
-  Whitefield: { constituency: "Mahadevapura", representative: "Manjula S. Aravind Limbavali" },
-  Jayanagar: { constituency: "Jayanagar", representative: "C. K. Ramamurthy" },
-  "HSR Layout": { constituency: "Bommanahalli", representative: "M. Satish Reddy" },
-  Marathahalli: { constituency: "Mahadevapura", representative: "Manjula S. Aravind Limbavali" },
-  "Electronic City": { constituency: "Bommanahalli", representative: "M. Satish Reddy" },
-  "BTM Layout": { constituency: "BTM Layout", representative: "Ramalinga Reddy" },
-  Malleshwaram: { constituency: "Malleshwaram", representative: "Dr. C. N. Ashwath Narayan" },
-  Hebbal: { constituency: "Hebbal", representative: "Byrathi Suresh" },
-  Banashankari: { constituency: "Banashankari", representative: "P. R. Ramesh" },
-  Yelahanka: { constituency: "Yelahanka", representative: "S. R. Vishwanath" },
-  Rajajinagar: { constituency: "Rajajinagar", representative: "S. Suresh Kumar" },
-  "JP Nagar": { constituency: "Padmanabhanagar", representative: "R. Ashoka" },
-  Bellandur: { constituency: "Mahadevapura", representative: "Manjula S. Aravind Limbavali" },
-  "Sarjapur Road": { constituency: "Mahadevapura", representative: "Manjula S. Aravind Limbavali" },
+// Approximate Lok Sabha (MP) constituency + sitting member per assembly seat.
+const MP_BY_CONSTITUENCY: Record<string, { mp: string; mpConstituency: string }> = {
+  "BTM Layout": { mp: "Tejasvi Surya", mpConstituency: "Bangalore South" },
+  "C.V. Raman Nagar": { mp: "PC Mohan", mpConstituency: "Bangalore Central" },
+  Mahadevapura: { mp: "PC Mohan", mpConstituency: "Bangalore Central" },
+  Jayanagar: { mp: "Tejasvi Surya", mpConstituency: "Bangalore South" },
+  Bommanahalli: { mp: "Tejasvi Surya", mpConstituency: "Bangalore South" },
+  Malleshwaram: { mp: "Shobha Karandlaje", mpConstituency: "Bangalore North" },
+  Hebbal: { mp: "Shobha Karandlaje", mpConstituency: "Bangalore North" },
+  Banashankari: { mp: "Tejasvi Surya", mpConstituency: "Bangalore South" },
+  Yelahanka: { mp: "Dr. CN Manjunath", mpConstituency: "Bangalore Rural" },
+  Rajajinagar: { mp: "PC Mohan", mpConstituency: "Bangalore Central" },
+  Padmanabhanagar: { mp: "Tejasvi Surya", mpConstituency: "Bangalore South" },
 };
+
+// area → assembly constituency, MLA and ward.
+const AREA_BASE: Record<string, { constituency: string; representative: string; ward: string }> = {
+  Koramangala: { constituency: "BTM Layout", representative: "Ramalinga Reddy", ward: "Koramangala (Ward 151)" },
+  Indiranagar: { constituency: "C.V. Raman Nagar", representative: "S. Raghu", ward: "Hoysala Nagar (Ward 80)" },
+  Whitefield: { constituency: "Mahadevapura", representative: "Manjula S. Aravind Limbavali", ward: "Hagadur (Ward 84)" },
+  Jayanagar: { constituency: "Jayanagar", representative: "C. K. Ramamurthy", ward: "Jayanagar (Ward 170)" },
+  "HSR Layout": { constituency: "Bommanahalli", representative: "M. Satish Reddy", ward: "HSR Layout (Ward 174)" },
+  Marathahalli: { constituency: "Mahadevapura", representative: "Manjula S. Aravind Limbavali", ward: "Marathahalli (Ward 85)" },
+  "Electronic City": { constituency: "Bommanahalli", representative: "M. Satish Reddy", ward: "Singasandra (Ward 192)" },
+  "BTM Layout": { constituency: "BTM Layout", representative: "Ramalinga Reddy", ward: "BTM Layout (Ward 176)" },
+  Malleshwaram: { constituency: "Malleshwaram", representative: "Dr. C. N. Ashwath Narayan", ward: "Malleshwaram (Ward 45)" },
+  Hebbal: { constituency: "Hebbal", representative: "Byrathi Suresh", ward: "Hebbal (Ward 21)" },
+  Banashankari: { constituency: "Banashankari", representative: "P. R. Ramesh", ward: "Banashankari (Ward 154)" },
+  Yelahanka: { constituency: "Yelahanka", representative: "S. R. Vishwanath", ward: "Yelahanka (Ward 6)" },
+  Rajajinagar: { constituency: "Rajajinagar", representative: "S. Suresh Kumar", ward: "Rajajinagar (Ward 99)" },
+  "JP Nagar": { constituency: "Padmanabhanagar", representative: "R. Ashoka", ward: "JP Nagar (Ward 178)" },
+  Bellandur: { constituency: "Mahadevapura", representative: "Manjula S. Aravind Limbavali", ward: "Bellandur (Ward 150)" },
+  "Sarjapur Road": { constituency: "Mahadevapura", representative: "Manjula S. Aravind Limbavali", ward: "Bellandur (Ward 150)" },
+};
+
+export const AREA_CONSTITUENCY: Record<string, ConstituencyInfo> = Object.fromEntries(
+  Object.entries(AREA_BASE).map(([area, base]) => {
+    const mp = MP_BY_CONSTITUENCY[base.constituency] ?? {
+      mp: "MP unknown",
+      mpConstituency: "Bengaluru",
+    };
+    return [area, { ...base, ...mp }];
+  }),
+) as Record<string, ConstituencyInfo>;
 
 export function constituencyForArea(area: string | null | undefined): ConstituencyInfo {
   if (area && AREA_CONSTITUENCY[area]) return AREA_CONSTITUENCY[area];
-  return { constituency: "Unmapped area", representative: "Representative unknown" };
+  return {
+    constituency: "Unmapped area",
+    representative: "Representative unknown",
+    ward: "Ward unknown",
+    mp: "MP unknown",
+    mpConstituency: "Bengaluru",
+  };
 }
+
+// City-wide accountability coverage stats (indicative, for the landing banner).
+export const CITY_STATS = {
+  wards: 198,
+  mlas: 28,
+  mps: 5,
+  scope: "All of Bengaluru",
+};
