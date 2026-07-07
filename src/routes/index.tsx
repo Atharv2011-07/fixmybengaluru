@@ -34,6 +34,7 @@ import {
   SEVERITY_ORDER,
   STATUS_CONFIG,
   STATUS_ORDER,
+  CITY_STATS,
 } from "@/lib/constants";
 
 export const Route = createFileRoute("/")({
@@ -101,6 +102,20 @@ function Index() {
       {intro && <CityIntro onDone={() => setIntro(false)} />}
       <AppHeader />
       <LocationBanner />
+
+      {/* City accountability coverage banner */}
+      <div className="border-b border-border/70 bg-muted/40">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-2 gap-y-1 px-4 py-2 text-center text-xs text-muted-foreground sm:text-sm">
+          <span><span className="font-bold text-foreground">{CITY_STATS.wards}</span> wards</span>
+          <span aria-hidden>·</span>
+          <span><span className="font-bold text-foreground">{CITY_STATS.mlas}</span> MLAs</span>
+          <span aria-hidden>·</span>
+          <span><span className="font-bold text-foreground">{CITY_STATS.mps}</span> MPs</span>
+          <span aria-hidden>·</span>
+          <span>{CITY_STATS.scope}</span>
+          <span className="hidden sm:inline">— every pothole mapped to who's responsible.</span>
+        </div>
+      </div>
 
       {/* Report centerpiece — Google-search-style focal CTA */}
       <section className="relative flex flex-col items-center justify-center px-4 py-16 text-center sm:py-24">
