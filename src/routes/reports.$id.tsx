@@ -13,6 +13,7 @@ import {
   Landmark,
   Building2,
   User,
+  HardHat,
 } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
 import { AppHeader } from "@/components/AppHeader";
@@ -30,6 +31,7 @@ import {
 } from "@/lib/reports";
 import { STATUS_CONFIG, STATUS_ORDER } from "@/lib/constants";
 import { buildBbmpWhatsAppUrl, isOfficialReport, constituencyForArea } from "@/lib/constants";
+import { contractorForRoad } from "@/lib/constants";
 import { useAuth } from "@/lib/useAuth";
 import { incrementWspComplaintCount } from "@/lib/profileStats";
 
@@ -105,6 +107,7 @@ function ReportDetail() {
 
   const currentStep = STATUS_CONFIG[report.status].step;
   const accountability = constituencyForArea(report.area);
+  const contractor = contractorForRoad(report.road_name, report.area);
 
   return (
     <div className="min-h-screen">
@@ -213,6 +216,16 @@ function ReportDetail() {
           <p className="mt-3 text-[11px] text-muted-foreground">
             Mapping is indicative, based on the reported area.
           </p>
+          <div className="mt-3 rounded-xl border border-border bg-muted/30 p-3">
+            <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-accent">
+              <HardHat className="size-4" /> Road contractor
+            </p>
+            <p className="mt-1 font-display text-sm font-bold leading-snug">{contractor.contractor}</p>
+            <p className="text-xs text-muted-foreground">
+              {contractor.agency} · {report.road_name || report.area || "Bengaluru"}
+            </p>
+            <p className="mt-0.5 text-xs text-muted-foreground">Helpline: {contractor.contact}</p>
+          </div>
         </div>
 
         {/* Timeline */}
