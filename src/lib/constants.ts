@@ -264,7 +264,7 @@ const MP_BY_CONSTITUENCY: Record<string, { mp: string; mpConstituency: string }>
   Rajajinagar: { mp: "PC Mohan", mpConstituency: "Bangalore Central" },
   Padmanabhanagar: { mp: "Tejasvi Surya", mpConstituency: "Bangalore South" },
   "Vijay Nagar": { mp: "Tejasvi Surya", mpConstituency: "Bangalore South" },
-  Govindraj Nagar: { mp: "Tejasvi Surya", mpConstituency: "Bangalore South" },
+  "Govindraj Nagar": { mp: "Tejasvi Surya", mpConstituency: "Bangalore South" },
   Chickpet: { mp: "Tejasvi Surya", mpConstituency: "Bangalore South" },
   Basavanagudi: { mp: "Tejasvi Surya", mpConstituency: "Bangalore South" },
   Anekal: { mp: "Dr. CN Manjunath", mpConstituency: "Bangalore Rural" },
