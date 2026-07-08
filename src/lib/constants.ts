@@ -88,8 +88,6 @@ export const BENGALURU_AREAS = [
   "JP Nagar",
   "Bellandur",
   "Sarjapur Road",
-  "Other",
-];
   "Vijayanagar",
   "Basaveshwaranagar",
   "Rajarajeshwari Nagar",
