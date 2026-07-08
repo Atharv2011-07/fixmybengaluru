@@ -358,3 +358,38 @@ export const CITY_STATS = {
   mps: 5,
   scope: "All of Bengaluru",
 };
+
+// ── Road → contractor mapping ─────────────────────────────────────────────────
+// Indicative civil contractors executing BBMP road works. Assigned
+// deterministically per road so the same road always shows the same firm.
+export interface ContractorInfo {
+  contractor: string;
+  agency: string;
+  contact: string;
+}
+
+const ROAD_CONTRACTORS: ContractorInfo[] = [
+  { contractor: "Sri Manjunatha Constructions", agency: "BBMP Road Infra Wing", contact: "080-2266-0001" },
+  { contractor: "KMV Projects Ltd.", agency: "BBMP Major Roads Division", contact: "080-2266-0002" },
+  { contractor: "Nagarjuna Construction Co.", agency: "BBMP Road Infra Wing", contact: "080-2266-0003" },
+  { contractor: "RNS Infrastructure Ltd.", agency: "BBMP TenderSURE Cell", contact: "080-2266-0004" },
+  { contractor: "B.S. Ramaiah & Sons", agency: "BBMP Ward Works Division", contact: "080-2266-0005" },
+  { contractor: "Simplex Infrastructures", agency: "BBMP Major Roads Division", contact: "080-2266-0006" },
+  { contractor: "GVPR Engineers Ltd.", agency: "BBMP Road Infra Wing", contact: "080-2266-0007" },
+  { contractor: "Ashoka Buildcon Ltd.", agency: "BBMP TenderSURE Cell", contact: "080-2266-0008" },
+];
+
+// Stable hash so the same road string maps to the same contractor.
+function hashString(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return Math.abs(h);
+}
+
+export function contractorForRoad(
+  road: string | null | undefined,
+  area?: string | null,
+): ContractorInfo {
+  const key = (road?.trim() || area?.trim() || "Bengaluru").toLowerCase();
+  return ROAD_CONTRACTORS[hashString(key) % ROAD_CONTRACTORS.length];
+}
