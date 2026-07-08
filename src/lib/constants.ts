@@ -263,6 +263,23 @@ const MP_BY_CONSTITUENCY: Record<string, { mp: string; mpConstituency: string }>
   Yelahanka: { mp: "Dr. CN Manjunath", mpConstituency: "Bangalore Rural" },
   Rajajinagar: { mp: "PC Mohan", mpConstituency: "Bangalore Central" },
   Padmanabhanagar: { mp: "Tejasvi Surya", mpConstituency: "Bangalore South" },
+  "Vijay Nagar": { mp: "Tejasvi Surya", mpConstituency: "Bangalore South" },
+  Govindraj Nagar: { mp: "Tejasvi Surya", mpConstituency: "Bangalore South" },
+  Chickpet: { mp: "Tejasvi Surya", mpConstituency: "Bangalore South" },
+  Basavanagudi: { mp: "Tejasvi Surya", mpConstituency: "Bangalore South" },
+  Anekal: { mp: "Dr. CN Manjunath", mpConstituency: "Bangalore Rural" },
+  Rajarajeshwarinagar: { mp: "Dr. CN Manjunath", mpConstituency: "Bangalore Rural" },
+  Yeshwanthpur: { mp: "Shobha Karandlaje", mpConstituency: "Bangalore North" },
+  Dasarahalli: { mp: "Shobha Karandlaje", mpConstituency: "Bangalore North" },
+  Byatarayanapura: { mp: "Shobha Karandlaje", mpConstituency: "Bangalore North" },
+  Krishnarajapuram: { mp: "Shobha Karandlaje", mpConstituency: "Bangalore North" },
+  Pulakeshinagar: { mp: "Shobha Karandlaje", mpConstituency: "Bangalore North" },
+  Sarvagnanagar: { mp: "PC Mohan", mpConstituency: "Bangalore Central" },
+  Shivajinagar: { mp: "PC Mohan", mpConstituency: "Bangalore Central" },
+  "Shanti Nagar": { mp: "PC Mohan", mpConstituency: "Bangalore Central" },
+  "Gandhi Nagar": { mp: "PC Mohan", mpConstituency: "Bangalore Central" },
+  Chamrajpet: { mp: "PC Mohan", mpConstituency: "Bangalore Central" },
+  "Bangalore South": { mp: "Tejasvi Surya", mpConstituency: "Bangalore South" },
 };
 
 // area → assembly constituency, MLA and ward.
