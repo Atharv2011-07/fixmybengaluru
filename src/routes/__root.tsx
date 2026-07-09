@@ -169,6 +169,18 @@ function RootComponent() {
     return () => sub.subscription.unsubscribe();
   }, [router, queryClient]);
 
+  // No logins: every visitor gets a silent, persistent anonymous session so
+  // reporting, chat, quiz and voting keep working without any sign-in screen.
+  useEffect(() => {
+    let active = true;
+    supabase.auth.getSession().then(({ data }) => {
+      if (active && !data.session) supabase.auth.signInAnonymously();
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
