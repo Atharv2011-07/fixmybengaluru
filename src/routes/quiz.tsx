@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Brain, CheckCircle2, Loader2, XCircle } from "lucide-react";
@@ -106,16 +106,9 @@ function QuizPage() {
       </section>
 
       <div className="mx-auto w-full max-w-2xl flex-1 px-4 py-8">
-        {loading || checking ? (
+        {loading || checking || !isAuthenticated ? (
           <div className="grid place-items-center py-20 text-muted-foreground">
             <Loader2 className="size-6 animate-spin" />
-          </div>
-        ) : !isAuthenticated ? (
-          <div className="rounded-xl border border-dashed border-border p-8 text-center">
-            <p className="text-sm text-muted-foreground">Sign in to play the daily quiz.</p>
-            <Button asChild className="mt-4">
-              <Link to="/auth">Sign in</Link>
-            </Button>
           </div>
         ) : attempt ? (
           <ResultCard score={attempt.score} total={attempt.total} alreadyPlayed />
