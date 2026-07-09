@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -141,18 +141,9 @@ function CommunityPage() {
       </section>
 
       <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4">
-        {loading ? (
+        {loading || !isAuthenticated ? (
           <div className="grid flex-1 place-items-center py-20 text-muted-foreground">
             <Loader2 className="size-6 animate-spin" />
-          </div>
-        ) : !isAuthenticated ? (
-          <div className="grid flex-1 place-items-center py-20">
-            <div className="rounded-xl border border-dashed border-border p-8 text-center">
-              <p className="text-sm text-muted-foreground">Sign in to read and join the conversation.</p>
-              <Button asChild className="mt-4">
-                <Link to="/auth">Sign in</Link>
-              </Button>
-            </div>
           </div>
         ) : (
           <>
