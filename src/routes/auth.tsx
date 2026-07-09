@@ -24,7 +24,10 @@ const schema = z.object({
 
 function AuthPage() {
   const navigate = useNavigate();
-  const { isAuthenticated, loading } = useAuth();
+  const { user, loading } = useAuth();
+  // Anonymous sessions don't count as "signed in" here — otherwise the silent
+  // anonymous auto-login would bounce every visitor off /auth back to the home intro.
+  const isRealUser = !!user && !user.is_anonymous;
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,8 +35,8 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (!loading && isAuthenticated) navigate({ to: "/" });
-  }, [loading, isAuthenticated, navigate]);
+    if (!loading && isRealUser) navigate({ to: "/" });
+  }, [loading, isRealUser, navigate]);
 
   const submit = async () => {
     const parsed = schema.safeParse({ email, password });
