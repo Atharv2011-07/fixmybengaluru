@@ -35,7 +35,7 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (!loading && isRealUser) navigate({ to: "/" });
+    if (!loading && isRealUser) navigate({ to: "/developer" });
   }, [loading, isRealUser, navigate]);
 
   const submit = async () => {
@@ -57,12 +57,12 @@ function AuthPage() {
         });
         if (error) throw error;
         toast.success("Account created! You can start reporting right away.");
-        navigate({ to: "/" });
+        navigate({ to: "/developer" });
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast.success("Welcome back!");
-        navigate({ to: "/" });
+        navigate({ to: "/developer" });
       }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Something went wrong");
@@ -73,14 +73,14 @@ function AuthPage() {
 
   const google = async () => {
     setBusy(true);
-    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
+    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: `${window.location.origin}/auth` });
     if (result.error) {
       toast.error("Google sign-in failed. Please try again.");
       setBusy(false);
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/" });
+    navigate({ to: "/developer" });
   };
 
   return (
