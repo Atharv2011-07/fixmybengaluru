@@ -103,6 +103,7 @@
   --chart-4: oklch(0.64 0.16 150);
   --chart-5: oklch(0.45 0.11 240);
   --gradient-hero: linear-gradient(135deg, oklch(0.98 0.015 235), oklch(0.95 0.03 230) 55%, oklch(0.93 0.04 228));
+  --page-canvas: linear-gradient(160deg, oklch(0.99 0.01 235), oklch(0.96 0.025 230) 55%, oklch(0.94 0.035 228));
   --gradient-amber: linear-gradient(135deg, oklch(0.62 0.24 30), oklch(0.5 0.22 20));
   --shadow-card: 0 1px 2px oklch(0.4 0.05 250 / 0.06), 0 12px 32px -18px oklch(0.4 0.05 250 / 0.28);
   --shadow-float: 0 16px 48px -16px oklch(0.35 0.06 255 / 0.4);
@@ -146,6 +147,7 @@
   --chart-4: oklch(0.68 0.16 152);
   --chart-5: oklch(0.58 0.12 238);
   --gradient-hero: linear-gradient(135deg, oklch(0.28 0.05 240), oklch(0.2 0.03 245) 55%, oklch(0.3 0.06 235));
+  --page-canvas: linear-gradient(160deg, oklch(0.19 0.02 250), oklch(0.16 0.02 255) 55%, oklch(0.2 0.03 245));
   --gradient-amber: linear-gradient(135deg, oklch(0.58 0.25 30), oklch(0.34 0.14 22));
   --shadow-card: 0 1px 2px oklch(0 0 0 / 0.5), 0 8px 24px -12px oklch(0 0 0 / 0.6);
   --shadow-float: 0 12px 40px -12px oklch(0 0 0 / 0.7);
