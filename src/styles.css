@@ -291,8 +291,8 @@
 
 /* Report CTA — Google-search-style centerpiece with animated pointing arrows */
 @keyframes report-pulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 20px 60px -18px oklch(0.56 0.24 27 / 0.7); }
-  50% { transform: scale(1.04); box-shadow: 0 28px 80px -14px oklch(0.56 0.24 27 / 0.9); }
+  0%, 100% { transform: scale(1); box-shadow: 0 20px 60px -18px oklch(0.48 0.16 265 / 0.7); }
+  50% { transform: scale(1.04); box-shadow: 0 28px 80px -14px oklch(0.48 0.16 265 / 0.9); }
 }
 .report-cta {
   animation: report-pulse 2.4s ease-in-out infinite;
