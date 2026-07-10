@@ -93,9 +93,10 @@ export function LocationPicker({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const mapRef = useRef<google.maps.Map | null>(null);
-  const markerRef = useRef<google.maps.Marker | null>(null);
   const onChangeRef = useRef(onChange);
   onChangeRef.current = onChange;
+  // Guards against feedback loops between programmatic panTo and idle events.
+  const programmaticRef = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -107,8 +108,15 @@ export function LocationPicker({
         zoom: value ? 16 : 12,
       });
       mapRef.current = map;
-      map.addListener("click", (e: google.maps.MapMouseEvent) => {
-        if (e.latLng) onChangeRef.current(e.latLng.lat(), e.latLng.lng());
+      // GeoGuessr-style: the pin is fixed at the screen centre — moving the
+      // map moves the location. Report the centre when the map settles.
+      map.addListener("idle", () => {
+        if (programmaticRef.current) {
+          programmaticRef.current = false;
+          return;
+        }
+        const c = map.getCenter();
+        if (c) onChangeRef.current(c.lat(), c.lng());
       });
     });
     return () => {
@@ -116,24 +124,25 @@ export function LocationPicker({
     };
   }, []);
 
-  // Sync marker + view with the controlled value.
+  // Recentre the map when the value is set externally (area select, "use my
+  // location"), without echoing it back through the idle handler.
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !value) return;
-    const maps = (window as unknown as { google: { maps: typeof google.maps } }).google.maps;
-    if (!markerRef.current) {
-      markerRef.current = new maps.Marker({
-        map,
-        draggable: true,
-        icon: { url: pinIcon("#e11d2a"), scaledSize: new maps.Size(30, 40), anchor: new maps.Point(15, 40) },
-      });
-      markerRef.current.addListener("dragend", (e: google.maps.MapMouseEvent) => {
-        if (e.latLng) onChangeRef.current(e.latLng.lat(), e.latLng.lng());
-      });
-    }
-    markerRef.current.setPosition(value);
+    const c = map.getCenter();
+    // Skip if the map is already centred here (avoids feedback with idle).
+    if (c && Math.abs(c.lat() - value.lat) < 1e-6 && Math.abs(c.lng() - value.lng) < 1e-6) return;
+    programmaticRef.current = true;
     map.panTo(value);
   }, [value]);
 
-  return <div ref={ref} className="h-full w-full" />;
+  return (
+    <div className="relative h-full w-full">
+      <div ref={ref} className="h-full w-full" />
+      {/* Fixed centre pin — stays put while the map moves under it. */}
+      <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-full">
+        <img src={pinIcon("#4338ca")} alt="Selected location" width={30} height={40} className="drop-shadow-md" />
+      </div>
+    </div>
+  );
 }

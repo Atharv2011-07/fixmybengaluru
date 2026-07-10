@@ -196,7 +196,7 @@ export const BBMP_WHATSAPP_NUMBER = "919480685700";
 
 // Public-facing app/website identity used in the message footer.
 export const APP_NAME = "FixMyBengaluru";
-export const APP_WEBSITE = "https://fixmybengaluru.lovable.app";
+export const APP_WEBSITE = "https://fixmybengaluru.com";
 
 export function buildBbmpWhatsAppUrl(report: {
   complaint_id: string;
@@ -234,7 +234,7 @@ export function buildBbmpWhatsAppUrl(report: {
     `*Address:* ${address}`,
     `📍 ${maps}`,
     "",
-    `Website: ${APP_NAME} — ${APP_WEBSITE}`,
+    `Filed via ${APP_NAME}`,
   ];
   return `https://wa.me/${BBMP_WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
 }

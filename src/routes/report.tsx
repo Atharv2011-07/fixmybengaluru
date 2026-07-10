@@ -162,6 +162,7 @@ function ReportPage() {
   const submit = async () => {
     const parsed = schema.safeParse({ description });
     if (!parsed.success) return toast.error(parsed.error.issues[0].message);
+    if (!files.length) return toast.error("Please add at least one photo of the pothole");
     if (!coords) return toast.error("Please set the pothole location on the map");
     if (!user && !reporterName.trim()) return toast.error("Please add your name (or sign in)");
     if (files.length && ai && !ai.isPothole) {
@@ -216,7 +217,7 @@ function ReportPage() {
         </p>
 
         {/* Photos */}
-        <Section title="Photos" subtitle="Up to 5 images. The first is analyzed by AI.">
+        <Section title="Photos" subtitle="Required — up to 5 images. The first is analyzed by AI.">
           <div className="flex flex-wrap gap-2">
             {previews.map((src, i) => (
               <div key={i} className="relative size-24 overflow-hidden rounded-lg border border-border">
@@ -325,7 +326,7 @@ function ReportPage() {
         </Section>
 
         {/* Location */}
-        <Section title="Location" subtitle="Tap the map to drop a pin, or use your current location.">
+        <Section title="Location" subtitle="Drag the map to place the pothole under the centre pin, or use your current location.">
           <Button type="button" variant="outline" onClick={useMyLocation} disabled={locating} className="gap-1.5">
             {locating ? <Loader2 className="size-4 animate-spin" /> : <LocateFixed className="size-4" />}
             Use my location
