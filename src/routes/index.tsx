@@ -208,10 +208,7 @@ function Index() {
           style={{ ["--map-h" as string]: `${settings.map_height_px}px` }}
         >
           {/* Search / filters — placed right above the reports */}
-          <section
-            className="border-b border-border/70 bg-cover bg-center"
-            style={{ backgroundImage: "url('/bg-gradient.svg')" }}
-          >
+          <section className="border-b border-border/70 bg-muted/40">
             <div className="flex flex-wrap items-center gap-2 px-4 py-3">
               <div className="relative min-w-[160px] flex-1">
                 <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
