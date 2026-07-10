@@ -326,7 +326,7 @@ function ReportPage() {
         </Section>
 
         {/* Location */}
-        <Section title="Location" subtitle="Tap the map to drop a pin, or use your current location.">
+        <Section title="Location" subtitle="Drag the map to place the pothole under the centre pin, or use your current location.">
           <Button type="button" variant="outline" onClick={useMyLocation} disabled={locating} className="gap-1.5">
             {locating ? <Loader2 className="size-4 animate-spin" /> : <LocateFixed className="size-4" />}
             Use my location
