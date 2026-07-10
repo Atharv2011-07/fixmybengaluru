@@ -146,15 +146,23 @@ function Index() {
 
       {/* Hero stats */}
       {settings.show_hero && (
-      <section className="relative overflow-hidden border-b border-border/70 bg-gradient-hero text-primary-foreground">
-        <div className="pointer-events-none absolute inset-0 opacity-70">
-          {settings.show_dotfield && <DotField bulgeStrength={67} glowRadius={160} />}
+      <section className="relative overflow-hidden border-b border-border/70 bg-gradient-hero text-foreground">
+        <div className="pointer-events-none absolute inset-0 opacity-90">
+          {settings.show_dotfield && (
+            <DotField
+              bulgeStrength={67}
+              glowRadius={160}
+              gradientFrom="rgba(56, 189, 248, 0.5)"
+              gradientTo="rgba(125, 211, 252, 0.32)"
+              glowColor="#38bdf8"
+            />
+          )}
         </div>
         <div className="relative mx-auto max-w-6xl px-4 py-6">
-          <h1 className="font-display text-2xl font-bold sm:text-3xl">
+          <h1 className="font-display text-2xl font-bold text-foreground sm:text-3xl">
             {settings.hero_title}
           </h1>
-          <p className="mt-1 max-w-xl text-sm text-primary-foreground/80">
+          <p className="mt-1 max-w-xl text-sm text-muted-foreground">
             {settings.hero_subtitle}
           </p>
           <div className="mt-4 grid grid-cols-2 gap-2 sm:max-w-xl sm:grid-cols-4">
@@ -200,10 +208,7 @@ function Index() {
           style={{ ["--map-h" as string]: `${settings.map_height_px}px` }}
         >
           {/* Search / filters — placed right above the reports */}
-          <section
-            className="border-b border-border/70 bg-cover bg-center"
-            style={{ backgroundImage: "url('/bg-gradient.svg')" }}
-          >
+          <section className="border-b border-border/70 bg-muted/40">
             <div className="flex flex-wrap items-center gap-2 px-4 py-3">
               <div className="relative min-w-[160px] flex-1">
                 <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -257,9 +262,9 @@ function Index() {
 
 function Stat({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-xl bg-primary-foreground/10 px-3 py-2 backdrop-blur">
-      <p className="font-display text-2xl font-bold leading-none">{value}</p>
-      <p className="mt-1 text-[11px] uppercase tracking-wide text-primary-foreground/70">{label}</p>
+    <div className="rounded-xl border border-border/60 bg-card/70 px-3 py-2 backdrop-blur">
+      <p className="font-display text-2xl font-bold leading-none text-foreground">{value}</p>
+      <p className="mt-1 text-[11px] uppercase tracking-wide text-muted-foreground">{label}</p>
     </div>
   );
 }
