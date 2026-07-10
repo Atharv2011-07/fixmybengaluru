@@ -265,9 +265,9 @@ function Index() {
 
 function Stat({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-xl bg-primary-foreground/10 px-3 py-2 backdrop-blur">
-      <p className="font-display text-2xl font-bold leading-none">{value}</p>
-      <p className="mt-1 text-[11px] uppercase tracking-wide text-primary-foreground/70">{label}</p>
+    <div className="rounded-xl border border-border/60 bg-card/70 px-3 py-2 backdrop-blur">
+      <p className="font-display text-2xl font-bold leading-none text-foreground">{value}</p>
+      <p className="mt-1 text-[11px] uppercase tracking-wide text-muted-foreground">{label}</p>
     </div>
   );
 }
