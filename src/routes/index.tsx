@@ -146,15 +146,23 @@ function Index() {
 
       {/* Hero stats */}
       {settings.show_hero && (
-      <section className="relative overflow-hidden border-b border-border/70 bg-gradient-hero text-primary-foreground">
-        <div className="pointer-events-none absolute inset-0 opacity-70">
-          {settings.show_dotfield && <DotField bulgeStrength={67} glowRadius={160} />}
+      <section className="relative overflow-hidden border-b border-border/70 bg-gradient-hero text-foreground">
+        <div className="pointer-events-none absolute inset-0 opacity-90">
+          {settings.show_dotfield && (
+            <DotField
+              bulgeStrength={67}
+              glowRadius={160}
+              gradientFrom="rgba(56, 189, 248, 0.5)"
+              gradientTo="rgba(125, 211, 252, 0.32)"
+              glowColor="#38bdf8"
+            />
+          )}
         </div>
         <div className="relative mx-auto max-w-6xl px-4 py-6">
-          <h1 className="font-display text-2xl font-bold sm:text-3xl">
+          <h1 className="font-display text-2xl font-bold text-foreground sm:text-3xl">
             {settings.hero_title}
           </h1>
-          <p className="mt-1 max-w-xl text-sm text-primary-foreground/80">
+          <p className="mt-1 max-w-xl text-sm text-muted-foreground">
             {settings.hero_subtitle}
           </p>
           <div className="mt-4 grid grid-cols-2 gap-2 sm:max-w-xl sm:grid-cols-4">
