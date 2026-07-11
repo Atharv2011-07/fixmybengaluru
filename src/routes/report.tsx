@@ -26,6 +26,7 @@ import {
 import { LocationPicker } from "@/components/map/MapView";
 import { SeverityBadge } from "@/components/SeverityBadge";
 import { analyzePothole, type PotholeAnalysis } from "@/lib/ai.functions";
+import { createReport, uploadPotholeImages } from "@/lib/reports";
 import { useAuth } from "@/lib/useAuth";
 import {
   BENGALURU_AREAS,
