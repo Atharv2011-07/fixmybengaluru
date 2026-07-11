@@ -61,7 +61,6 @@ function ReportPage() {
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [severity, setSeverity] = useState<Severity>("moderate");
-  const [description, setDescription] = useState("");
   const [roadName, setRoadName] = useState("");
   const [landmark, setLandmark] = useState("");
   const [ward, setWard] = useState("");
