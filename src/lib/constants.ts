@@ -223,7 +223,6 @@ export function buildBbmpWhatsAppUrl(report: {
     "",
     `*Citizen Name:* ${citizen}`,
     "",
-    `*Complaint Description:* ${report.description}`,
     "",
     `*Severity:* ${SEVERITY_CONFIG[report.severity].label}`,
     "",
