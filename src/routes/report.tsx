@@ -160,8 +160,6 @@ function ReportPage() {
   };
 
   const submit = async () => {
-    const parsed = schema.safeParse({ description });
-    if (!parsed.success) return toast.error(parsed.error.issues[0].message);
     if (!files.length) return toast.error("Please add at least one photo of the pothole");
     if (!coords) return toast.error("Please set the pothole location on the map");
     if (!user && !reporterName.trim()) return toast.error("Please add your name (or sign in)");
@@ -174,7 +172,7 @@ function ReportPage() {
       const paths = files.length ? await uploadPotholeImages(files, user?.id ?? null) : [];
       const report = await createReport(
         {
-          description: description.trim(),
+          description: "",
           severity,
           ai_severity: ai?.severity ?? null,
           ai_analysis: ai ? `${ai.analysis} (Est. size: ${ai.sizeEstimate}, confidence ${(ai.confidence * 100).toFixed(0)}%)` : null,
