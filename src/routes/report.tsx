@@ -283,14 +283,9 @@ function ReportPage() {
           )}
         </Section>
 
-        {/* Description + severity */}
+        {/* Severity + area */}
         <Section title="Details">
-          <div className="space-y-1.5">
-            <Label htmlFor="desc">Description</Label>
-            <Textarea id="desc" value={description} onChange={(e) => setDescription(e.target.value)}
-              placeholder="Describe the pothole, its location on the road, and any danger it poses…" rows={3} />
-          </div>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label>Severity</Label>
               <Select value={severity} onValueChange={(v) => setSeverity(v as Severity)}>
