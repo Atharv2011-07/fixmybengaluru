@@ -165,8 +165,7 @@ function ReportDetail() {
 
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           <div className="card-elevated p-4 md:col-span-2">
-            <h2 className="font-display text-base font-semibold">Description</h2>
-            <p className="mt-1.5 text-sm text-foreground/90">{report.description}</p>
+            <h2 className="font-display text-base font-semibold">Details</h2>
             {report.ai_analysis && (
               <div className="mt-3 rounded-lg border border-accent/30 bg-accent/5 p-3 text-sm">
                 <p className="flex items-center gap-1.5 font-semibold text-accent"><Sparkles className="size-4" /> AI analysis</p>

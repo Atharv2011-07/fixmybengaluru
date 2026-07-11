@@ -11,12 +11,10 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
-import { z } from "zod";
 import { AppHeader } from "@/components/AppHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import {
   Select,
@@ -29,7 +27,6 @@ import { LocationPicker } from "@/components/map/MapView";
 import { SeverityBadge } from "@/components/SeverityBadge";
 import { analyzePothole, type PotholeAnalysis } from "@/lib/ai.functions";
 import { createReport, uploadPotholeImages } from "@/lib/reports";
-import { validateDescription } from "@/lib/moderation";
 import { useAuth } from "@/lib/useAuth";
 import {
   BENGALURU_AREAS,
@@ -45,17 +42,6 @@ import { incrementWspComplaintCount } from "@/lib/profileStats";
 export const Route = createFileRoute("/report")({
   head: () => ({ meta: [{ title: "Report a Pothole — Pothole Bengaluru" }] }),
   component: ReportPage,
-});
-
-const schema = z.object({
-  description: z
-    .string()
-    .trim()
-    .min(10, "Add a short description (min 10 chars)")
-    .max(1000)
-    .refine((v) => validateDescription(v).ok, (v) => ({
-      message: validateDescription(v).reason ?? "Please enter a valid description.",
-    })),
 });
 
 function fileToDataUrl(file: File): Promise<string> {
@@ -75,7 +61,6 @@ function ReportPage() {
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [severity, setSeverity] = useState<Severity>("moderate");
-  const [description, setDescription] = useState("");
   const [roadName, setRoadName] = useState("");
   const [landmark, setLandmark] = useState("");
   const [ward, setWard] = useState("");
@@ -160,8 +145,6 @@ function ReportPage() {
   };
 
   const submit = async () => {
-    const parsed = schema.safeParse({ description });
-    if (!parsed.success) return toast.error(parsed.error.issues[0].message);
     if (!files.length) return toast.error("Please add at least one photo of the pothole");
     if (!coords) return toast.error("Please set the pothole location on the map");
     if (!user && !reporterName.trim()) return toast.error("Please add your name (or sign in)");
@@ -174,7 +157,7 @@ function ReportPage() {
       const paths = files.length ? await uploadPotholeImages(files, user?.id ?? null) : [];
       const report = await createReport(
         {
-          description: description.trim(),
+          description: "",
           severity,
           ai_severity: ai?.severity ?? null,
           ai_analysis: ai ? `${ai.analysis} (Est. size: ${ai.sizeEstimate}, confidence ${(ai.confidence * 100).toFixed(0)}%)` : null,
@@ -283,14 +266,9 @@ function ReportPage() {
           )}
         </Section>
 
-        {/* Description + severity */}
+        {/* Severity + area */}
         <Section title="Details">
-          <div className="space-y-1.5">
-            <Label htmlFor="desc">Description</Label>
-            <Textarea id="desc" value={description} onChange={(e) => setDescription(e.target.value)}
-              placeholder="Describe the pothole, its location on the road, and any danger it poses…" rows={3} />
-          </div>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label>Severity</Label>
               <Select value={severity} onValueChange={(v) => setSeverity(v as Severity)}>

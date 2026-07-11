@@ -46,7 +46,6 @@ export function ReportCard({ report }: { report: PotholeReport }) {
         <p className="mt-1 truncate font-display text-sm font-semibold">
           {report.road_name || report.area || "Pothole report"}
         </p>
-        <p className="line-clamp-1 text-xs text-muted-foreground">{report.description}</p>
         <div className="mt-1.5 flex items-center justify-between text-[11px] text-muted-foreground">
           <span className="flex items-center gap-1">
             <MapPin className="size-3" /> {report.area || "Bengaluru"}
