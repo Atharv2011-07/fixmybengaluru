@@ -50,21 +50,15 @@ export function MapView({ reports }: { reports: PotholeReport[] }) {
           map,
           icon: { url: pinIcon(markerHex(r)), scaledSize: new maps.Size(30, 40), anchor: new maps.Point(15, 40) },
         });
-        const content = `<div style="font-family:system-ui;min-width:180px;max-width:240px">
+        marker.addListener("click", () => {
+          infoRef.current?.setContent(
+            `<div style="font-family:system-ui;min-width:160px">
               <div style="font:600 11px monospace;color:#64748b">${r.complaint_id}</div>
               <div style="font:700 14px system-ui;margin:2px 0">${r.road_name || r.area || "Pothole report"}</div>
-              <div style="font:500 12px system-ui;color:#475569;margin-bottom:4px">${r.area || ""}${r.ward ? " · " + r.ward : ""}</div>
-              <a href="/reports/${r.id}" style="font:600 12px system-ui;color:#0284c7">View details →</a>
-            </div>`;
-        marker.addListener("mouseover", () => {
-          infoRef.current?.setContent(content);
+              <a href="/reports/${r.id}" style="font:600 12px system-ui;color:#2563eb">View details →</a>
+            </div>`,
+          );
           infoRef.current?.open({ map, anchor: marker });
-        });
-        marker.addListener("mouseout", () => {
-          infoRef.current?.close();
-        });
-        marker.addListener("click", () => {
-          window.location.assign(`/reports/${r.id}`);
         });
         markersRef.current.push(marker);
         bounds.extend({ lat: r.latitude, lng: r.longitude });
