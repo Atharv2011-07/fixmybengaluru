@@ -1,22 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import {
-  ArrowDown,
-  ArrowLeft,
-  ArrowRight,
-  ArrowUp,
-  Filter,
-  MapPin,
-  Plus,
-  Search,
-} from "lucide-react";
-import { AppHeader } from "@/components/AppHeader";
+import { Home, List, Users, HelpCircle, Mail, MapPin, Plus, Search, SlidersHorizontal } from "lucide-react";
 import { MapView } from "@/components/map/MapView";
-import DotField from "@/components/DotField";
 import { CityIntro } from "@/components/CityIntro";
-import { ReportCard } from "@/components/ReportCard";
-import { LocationBanner } from "@/components/LocationBanner";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -26,15 +14,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { fetchReports } from "@/lib/reports";
-import { fetchSettings, DEFAULT_SETTINGS } from "@/lib/settings";
 import {
   BENGALURU_AREAS,
   SEVERITY_CONFIG,
   SEVERITY_ORDER,
   STATUS_CONFIG,
   STATUS_ORDER,
-  CITY_STATS,
 } from "@/lib/constants";
 
 export const Route = createFileRoute("/")({
@@ -52,21 +39,24 @@ export const Route = createFileRoute("/")({
 });
 
 const LEGEND = [
-  { color: "oklch(0.58 0.224 27)", label: "Critical" },
-  { color: "oklch(0.7 0.18 50)", label: "High" },
-  { color: "oklch(0.82 0.16 95)", label: "Moderate" },
-  { color: "oklch(0.64 0.16 150)", label: "Resolved" },
+  { color: "#e11d2a", label: "Critical" },
+  { color: "#f97316", label: "High" },
+  { color: "#eab308", label: "Moderate" },
+  { color: "#22c55e", label: "Resolved" },
+];
+
+const BOTTOM_NAV = [
+  { label: "Home", href: "/", icon: Home },
+  { label: "List", href: "/hall-of-shame", icon: List },
+  { label: "Community", href: "/community", icon: Users },
+  { label: "Quiz", href: "/quiz", icon: HelpCircle },
+  { label: "Contact", href: "/contact", icon: Mail },
 ];
 
 function Index() {
   const { data: reports = [], isLoading } = useQuery({
     queryKey: ["reports"],
     queryFn: fetchReports,
-  });
-
-  const { data: settings = DEFAULT_SETTINGS } = useQuery({
-    queryKey: ["site-settings"],
-    queryFn: fetchSettings,
   });
 
   const [intro, setIntro] = useState(true);
@@ -90,181 +80,101 @@ function Index() {
     });
   }, [reports, search, area, status, severity]);
 
-  const stats = useMemo(() => {
-    const total = reports.length;
-    const resolved = reports.filter((r) => r.status === "resolved").length;
-    const critical = reports.filter((r) => r.severity === "dangerous" && r.status !== "resolved").length;
-    return { total, resolved, open: total - resolved, critical };
-  }, [reports]);
-
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="relative h-screen w-screen overflow-hidden bg-background">
       {intro && <CityIntro onDone={() => setIntro(false)} />}
-      <AppHeader />
-      <LocationBanner />
 
-      {/* City accountability coverage banner */}
-      <div className="border-b border-border/70 bg-muted/40">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-2 gap-y-1 px-4 py-2 text-center text-xs text-muted-foreground sm:text-sm">
-          <span><span className="font-bold text-foreground">{CITY_STATS.wards}</span> wards</span>
-          <span aria-hidden>·</span>
-          <span><span className="font-bold text-foreground">{CITY_STATS.mlas}</span> MLAs</span>
-          <span aria-hidden>·</span>
-          <span><span className="font-bold text-foreground">{CITY_STATS.mps}</span> MPs</span>
-          <span aria-hidden>·</span>
-          <span>{CITY_STATS.scope}</span>
-          <span className="hidden sm:inline">— every pothole mapped to who's responsible.</span>
-        </div>
+      {/* Full-screen map */}
+      <div className="absolute inset-0">
+        <MapView reports={filtered} />
       </div>
 
-      {/* Report centerpiece — Google-search-style focal CTA */}
-      <section className="relative flex flex-col items-center justify-center px-4 py-16 text-center sm:py-24">
-        <h1 className="font-display text-3xl font-bold text-foreground drop-shadow-sm sm:text-5xl">
-          Spotted a pothole?
-        </h1>
-        <p className="mt-3 max-w-md text-sm text-foreground/80 sm:text-base">
-          Report it in seconds. Every report goes straight to the map and to the ward officials.
-        </p>
-
-        <div className="relative mt-12 flex items-center justify-center">
-          {/* Animated arrows pointing towards the button */}
-          <ArrowRight className="report-arrow a-left absolute -left-16 size-9 text-primary sm:-left-24 sm:size-12" strokeWidth={2.5} />
-          <ArrowLeft className="report-arrow a-right absolute -right-16 size-9 text-primary sm:-right-24 sm:size-12" strokeWidth={2.5} />
-          <ArrowDown className="report-arrow a-top absolute -top-14 size-9 text-primary sm:size-12" strokeWidth={2.5} />
-          <ArrowUp className="report-arrow a-bottom absolute -bottom-14 size-9 text-primary sm:size-12" strokeWidth={2.5} />
-
-          <Button
-            asChild
-            className="report-cta h-auto rounded-2xl px-10 py-6 text-lg font-bold sm:px-16 sm:py-8 sm:text-2xl"
-          >
-            <Link to="/report">
-              <MapPin className="size-6 sm:size-8" /> Report a Pothole
-            </Link>
-          </Button>
-        </div>
-      </section>
-
-      {/* Hero stats */}
-      {settings.show_hero && (
-      <section className="relative overflow-hidden border-b border-border/70 bg-gradient-hero text-foreground">
-        <div className="pointer-events-none absolute inset-0 opacity-90">
-          {settings.show_dotfield && (
-            <DotField
-              bulgeStrength={67}
-              glowRadius={160}
-              gradientFrom="rgba(56, 189, 248, 0.5)"
-              gradientTo="rgba(125, 211, 252, 0.32)"
-              glowColor="#38bdf8"
-            />
-          )}
-        </div>
-        <div className="relative mx-auto max-w-6xl px-4 py-6">
-          <h1 className="font-display text-2xl font-bold text-foreground sm:text-3xl">
-            {settings.hero_title}
-          </h1>
-          <p className="mt-1 max-w-xl text-sm text-muted-foreground">
-            {settings.hero_subtitle}
-          </p>
-          <div className="mt-4 grid grid-cols-2 gap-2 sm:max-w-xl sm:grid-cols-4">
-            <Stat label="Reported" value={stats.total} />
-            <Stat label="In progress" value={stats.open} />
-            <Stat label="Resolved" value={stats.resolved} />
-            <Stat label="Critical" value={stats.critical} />
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* Map + list */}
-      <div
-        className="relative z-[60] mx-auto grid w-full max-w-6xl flex-1 grid-cols-1 gap-0 lg:[grid-template-columns:minmax(0,var(--map-w))_1fr]"
-        style={{ ["--map-w" as string]: `${settings.map_width_px}px` }}
-      >
-        <div className="flex flex-col">
-          <div
-            className="relative min-h-[240px] lg:!h-[var(--map-h)]"
-            style={{
-              height: `${settings.map_mobile_vh}vh`,
-              ["--map-h" as string]: `${settings.map_height_px}px`,
-            }}
-          >
-            <MapView reports={filtered} />
-            {settings.show_legend && (
-            <div className="pointer-events-none absolute bottom-3 left-3 z-[500] flex flex-wrap gap-2 rounded-lg bg-card/90 p-2 text-[11px] shadow-[var(--shadow-card)] backdrop-blur">
-              {LEGEND.map((l) => (
-                <span key={l.label} className="flex items-center gap-1">
-                  <span className="size-2.5 rounded-full" style={{ background: l.color }} />
-                  {l.label}
-                </span>
-              ))}
-            </div>
-            )}
-          </div>
-
-        </div>
-
-        <aside
-          className="flex flex-col border-t border-border/70 lg:border-l lg:border-t-0 lg:[max-height:var(--map-h)]"
-          style={{ ["--map-h" as string]: `${settings.map_height_px}px` }}
+      {/* Top brand + search bar */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-[500] flex items-start justify-between gap-3 p-3 sm:p-4">
+        <a
+          href="/"
+          className="pointer-events-auto flex items-center gap-2 rounded-full border border-border/60 bg-card/90 px-4 py-2 text-sm font-bold shadow-[var(--shadow-card)] backdrop-blur"
         >
-          {/* Search / filters — placed right above the reports */}
-          <section className="border-b border-border/70 bg-muted/40">
-            <div className="flex flex-wrap items-center gap-2 px-4 py-3">
-              <div className="relative min-w-[160px] flex-1">
-                <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search road, area, ward, complaint ID…"
-                  className="pl-8"
-                />
-              </div>
+          <MapPin className="size-4 text-primary" />
+          FixMyBengaluru
+          <span className="ml-1 rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
+            {isLoading ? "…" : `${filtered.length}`}
+          </span>
+        </a>
+
+        <div className="pointer-events-auto flex flex-1 items-center gap-2 sm:max-w-md">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search road, area, ward…"
+              className="h-10 rounded-full border-border/60 bg-card/90 pl-9 shadow-[var(--shadow-card)] backdrop-blur"
+            />
+          </div>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="size-10 shrink-0 rounded-full border-border/60 bg-card/90 shadow-[var(--shadow-card)] backdrop-blur"
+                aria-label="Filters"
+              >
+                <SlidersHorizontal className="size-4" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent align="end" className="z-[1100] w-64 space-y-2">
               <FilterSelect value={area} onChange={setArea} placeholder="Area" allLabel="All areas"
                 options={BENGALURU_AREAS.map((a) => ({ value: a, label: a }))} />
               <FilterSelect value={status} onChange={setStatus} placeholder="Status" allLabel="All statuses"
                 options={STATUS_ORDER.map((s) => ({ value: s, label: STATUS_CONFIG[s].label }))} />
               <FilterSelect value={severity} onChange={setSeverity} placeholder="Severity" allLabel="All severity"
                 options={SEVERITY_ORDER.map((s) => ({ value: s, label: SEVERITY_CONFIG[s].label }))} />
-            </div>
-          </section>
-
-          <div className="flex items-center justify-between px-4 py-3">
-            <p className="flex items-center gap-1.5 text-sm font-semibold">
-              <Filter className="size-4 text-accent" /> {filtered.length} report{filtered.length === 1 ? "" : "s"}
-            </p>
-            <Button asChild size="sm" variant="outline" className="gap-1">
-              <Link to="/report"><Plus className="size-3.5" /> New</Link>
-            </Button>
+            </PopoverContent>
+          </Popover>
+          <div className="hidden sm:block">
+            <ThemeToggle />
           </div>
-          <div className="flex-1 space-y-2 overflow-y-auto px-4 pb-6">
-            {isLoading ? (
-              <div className="space-y-2 py-2">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="h-24 animate-pulse rounded-lg bg-muted/60" />
-                ))}
-              </div>
-            ) : filtered.length === 0 ? (
-              <div className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
-                No reports match your filters yet.
-                <div className="mt-3">
-                  <Button asChild size="sm"><Link to="/report">Report a pothole</Link></Button>
-                </div>
-              </div>
-            ) : (
-              filtered.map((r) => <ReportCard key={r.id} report={r} />)
-            )}
-          </div>
-        </aside>
+        </div>
       </div>
-    </div>
-  );
-}
 
-function Stat({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="rounded-xl border border-border/60 bg-card/70 px-3 py-2 backdrop-blur">
-      <p className="font-display text-2xl font-bold leading-none text-foreground">{value}</p>
-      <p className="mt-1 text-[11px] uppercase tracking-wide text-muted-foreground">{label}</p>
+      {/* Legend */}
+      <div className="pointer-events-none absolute left-3 top-20 z-[500] hidden flex-wrap gap-2 rounded-lg bg-card/90 p-2 text-[11px] shadow-[var(--shadow-card)] backdrop-blur sm:flex">
+        {LEGEND.map((l) => (
+          <span key={l.label} className="flex items-center gap-1">
+            <span className="size-2.5 rounded-full" style={{ background: l.color }} />
+            {l.label}
+          </span>
+        ))}
+      </div>
+
+      {/* Bottom taskbar */}
+      <nav className="absolute inset-x-0 bottom-3 z-[600] flex justify-center px-3 sm:bottom-5">
+        <div className="pointer-events-auto flex items-center gap-1 rounded-full border border-border/60 bg-card/95 p-1.5 shadow-[var(--shadow-float)] backdrop-blur">
+          {BOTTOM_NAV.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.href}
+                to={item.href}
+                className="flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold text-foreground/80 transition hover:bg-muted hover:text-foreground sm:text-sm"
+                activeProps={{ className: "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground" }}
+                activeOptions={{ exact: true }}
+              >
+                <Icon className="size-4" />
+                <span className="hidden sm:inline">{item.label}</span>
+              </Link>
+            );
+          })}
+          <Link
+            to="/report"
+            className="ml-1 flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-bold text-primary-foreground shadow-[var(--shadow-card)] transition hover:brightness-110 sm:text-sm"
+          >
+            <Plus className="size-4" />
+            Report
+          </Link>
+        </div>
+      </nav>
     </div>
   );
 }
