@@ -9,7 +9,6 @@ import {
   Filter,
   MapPin,
   Plus,
-  Search,
 } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { MapView } from "@/components/map/MapView";
@@ -18,7 +17,6 @@ import { CityIntro } from "@/components/CityIntro";
 import { ReportCard } from "@/components/ReportCard";
 import { LocationBanner } from "@/components/LocationBanner";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -71,24 +69,18 @@ function Index() {
 
   const [intro, setIntro] = useState(true);
 
-  const [search, setSearch] = useState("");
   const [area, setArea] = useState("all");
   const [status, setStatus] = useState("all");
   const [severity, setSeverity] = useState("all");
 
   const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
     return reports.filter((r) => {
       if (area !== "all" && r.area !== area) return false;
       if (status !== "all" && r.status !== status) return false;
       if (severity !== "all" && r.severity !== severity) return false;
-      if (q) {
-        const hay = `${r.complaint_id} ${r.road_name ?? ""} ${r.landmark ?? ""} ${r.area ?? ""} ${r.ward ?? ""} ${r.description}`.toLowerCase();
-        if (!hay.includes(q)) return false;
-      }
       return true;
     });
-  }, [reports, search, area, status, severity]);
+  }, [reports, area, status, severity]);
 
   const stats = useMemo(() => {
     const total = reports.length;
@@ -210,15 +202,6 @@ function Index() {
           {/* Search / filters — placed right above the reports */}
           <section className="border-b border-border/70 bg-muted/40">
             <div className="flex flex-wrap items-center gap-2 px-4 py-3">
-              <div className="relative min-w-[160px] flex-1">
-                <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search road, area, ward, complaint ID…"
-                  className="pl-8"
-                />
-              </div>
               <FilterSelect value={area} onChange={setArea} placeholder="Area" allLabel="All areas"
                 options={BENGALURU_AREAS.map((a) => ({ value: a, label: a }))} />
               <FilterSelect value={status} onChange={setStatus} placeholder="Status" allLabel="All statuses"
