@@ -11,6 +11,14 @@ function markerHex(report: PotholeReport): string {
   return "#eab308";
 }
 
+// Bengaluru urban bounding box — keeps the map scoped to the city.
+const BENGALURU_BOUNDS = {
+  north: 13.235,
+  south: 12.734,
+  east: 77.858,
+  west: 77.379,
+};
+
 const MAP_OPTIONS: google.maps.MapOptions = {
   mapTypeId: "hybrid",
   mapTypeControl: true,
@@ -18,6 +26,12 @@ const MAP_OPTIONS: google.maps.MapOptions = {
   fullscreenControl: false,
   clickableIcons: false,
   gestureHandling: "greedy",
+  minZoom: 10,
+  maxZoom: 20,
+  restriction: {
+    latLngBounds: BENGALURU_BOUNDS,
+    strictBounds: true,
+  },
 };
 
 export function MapView({ reports }: { reports: PotholeReport[] }) {
