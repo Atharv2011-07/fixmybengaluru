@@ -236,11 +236,11 @@ function Index() {
               <Link to="/report"><Plus className="size-3.5" /> New</Link>
             </Button>
           </div>
-          <div className="flex-1 space-y-2 overflow-y-auto px-4 pb-6">
+          <div className="flex-1 overflow-y-auto overscroll-contain px-3 pb-6 [scrollbar-width:thin]">
             {isLoading ? (
-              <div className="space-y-2 py-2">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="h-24 animate-pulse rounded-lg bg-muted/60" />
+              <div className="grid grid-cols-2 gap-2 py-2 lg:grid-cols-1">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="aspect-[16/10] animate-pulse rounded-lg bg-muted/60" />
                 ))}
               </div>
             ) : filtered.length === 0 ? (
@@ -251,7 +251,9 @@ function Index() {
                 </div>
               </div>
             ) : (
-              filtered.map((r) => <ReportCard key={r.id} report={r} />)
+              <div className="grid grid-cols-2 gap-2 lg:grid-cols-1 lg:gap-2.5">
+                {filtered.map((r) => <ReportCard key={r.id} report={r} />)}
+              </div>
             )}
           </div>
         </aside>
