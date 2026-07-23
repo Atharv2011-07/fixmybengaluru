@@ -16,7 +16,6 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as HallOfShameRouteImport } from './routes/hall-of-shame'
 import { Route as DeveloperRouteImport } from './routes/developer'
 import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CommunityRouteImport } from './routes/community'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ReportsIdRouteImport } from './routes/reports.$id'
@@ -56,11 +55,6 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CommunityRoute = CommunityRouteImport.update({
-  id: '/community',
-  path: '/community',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -80,7 +74,6 @@ const ReportsIdRoute = ReportsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
   '/developer': typeof DeveloperRoute
   '/hall-of-shame': typeof HallOfShameRoute
@@ -93,7 +86,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
   '/developer': typeof DeveloperRoute
   '/hall-of-shame': typeof HallOfShameRoute
@@ -107,7 +99,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
   '/developer': typeof DeveloperRoute
   '/hall-of-shame': typeof HallOfShameRoute
@@ -122,7 +113,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
-    | '/community'
     | '/contact'
     | '/developer'
     | '/hall-of-shame'
@@ -135,7 +125,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
-    | '/community'
     | '/contact'
     | '/developer'
     | '/hall-of-shame'
@@ -148,7 +137,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/auth'
-    | '/community'
     | '/contact'
     | '/developer'
     | '/hall-of-shame'
@@ -162,7 +150,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
-  CommunityRoute: typeof CommunityRoute
   ContactRoute: typeof ContactRoute
   DeveloperRoute: typeof DeveloperRoute
   HallOfShameRoute: typeof HallOfShameRoute
@@ -224,13 +211,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/community': {
-      id: '/community'
-      path: '/community'
-      fullPath: '/community'
-      preLoaderRoute: typeof CommunityRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -258,7 +238,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
-  CommunityRoute: CommunityRoute,
   ContactRoute: ContactRoute,
   DeveloperRoute: DeveloperRoute,
   HallOfShameRoute: HallOfShameRoute,

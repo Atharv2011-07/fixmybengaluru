@@ -7,7 +7,6 @@ import PillNav from "@/components/PillNav";
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
   { label: "List", href: "/hall-of-shame" },
-  { label: "Community", href: "/community" },
   { label: "Quiz", href: "/quiz" },
   { label: "Contact", href: "/contact" },
 ];
