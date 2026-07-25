@@ -134,3 +134,43 @@ export async function toggleVote(reportId: string, userId: string, currentlyVote
     if (error) throw error;
   }
 }
+
+export interface FixSubmission {
+  id: string;
+  report_id: string;
+  submitter_name: string | null;
+  latitude: number;
+  longitude: number;
+  distance_m: number;
+  verified: boolean;
+  image_urls: string[];
+  created_at: string;
+}
+
+export async function fetchFixSubmissions(reportId: string): Promise<FixSubmission[]> {
+  const { data, error } = await supabase
+    .from("fix_submissions" as never)
+    .select("*")
+    .eq("report_id", reportId)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as unknown as FixSubmission[];
+}
+
+export async function submitFixVerification(input: {
+  reportId: string;
+  lat: number;
+  lng: number;
+  imagePaths: string[];
+  submitterName: string;
+}): Promise<FixSubmission> {
+  const { data, error } = await supabase.rpc("submit_fix_verification" as never, {
+    _report_id: input.reportId,
+    _lat: input.lat,
+    _lng: input.lng,
+    _image_urls: input.imagePaths,
+    _submitter_name: input.submitterName,
+  } as never);
+  if (error) throw error;
+  return data as unknown as FixSubmission;
+}
