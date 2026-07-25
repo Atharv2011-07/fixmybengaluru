@@ -114,7 +114,6 @@ function ReportPage() {
 
   const handlePinChange = (lat: number, lng: number) => {
     setCoords({ lat, lng });
-    setArea(nearestArea(lat, lng));
   };
 
   const removeImage = (i: number) => {
@@ -132,7 +131,6 @@ function ReportPage() {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-        setArea(nearestArea(pos.coords.latitude, pos.coords.longitude));
         setLocating(false);
         toast.success("Location captured");
       },
