@@ -21,6 +21,7 @@ import { SeverityBadge } from "@/components/SeverityBadge";
 import { StatusBadge } from "@/components/StatusBadge";
 import { OfficialBadge } from "@/components/OfficialBadge";
 import { MapView } from "@/components/map/MapView";
+import { FixVerificationSection } from "@/components/FixVerificationSection";
 import { Button } from "@/components/ui/button";
 import {
   fetchReport,
@@ -268,6 +269,8 @@ function ReportDetail() {
             <MapView reports={[report]} />
           </div>
         </div>
+
+        <FixVerificationSection report={report} />
       </main>
     </div>
   );

@@ -38,6 +38,53 @@ export type Database = {
         }
         Relationships: []
       }
+      fix_submissions: {
+        Row: {
+          created_at: string
+          distance_m: number
+          id: string
+          image_urls: string[]
+          latitude: number
+          longitude: number
+          report_id: string
+          submitter_name: string | null
+          submitter_user_id: string | null
+          verified: boolean
+        }
+        Insert: {
+          created_at?: string
+          distance_m: number
+          id?: string
+          image_urls?: string[]
+          latitude: number
+          longitude: number
+          report_id: string
+          submitter_name?: string | null
+          submitter_user_id?: string | null
+          verified?: boolean
+        }
+        Update: {
+          created_at?: string
+          distance_m?: number
+          id?: string
+          image_urls?: string[]
+          latitude?: number
+          longitude?: number
+          report_id?: string
+          submitter_name?: string | null
+          submitter_user_id?: string | null
+          verified?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fix_submissions_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -341,6 +388,37 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      haversine_m: {
+        Args: { lat1: number; lat2: number; lon1: number; lon2: number }
+        Returns: number
+      }
+      submit_fix_verification: {
+        Args: {
+          _image_urls: string[]
+          _lat: number
+          _lng: number
+          _report_id: string
+          _submitter_name: string
+        }
+        Returns: {
+          created_at: string
+          distance_m: number
+          id: string
+          image_urls: string[]
+          latitude: number
+          longitude: number
+          report_id: string
+          submitter_name: string | null
+          submitter_user_id: string | null
+          verified: boolean
+        }
+        SetofOptions: {
+          from: "*"
+          to: "fix_submissions"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
     }
     Enums: {
