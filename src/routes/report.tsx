@@ -31,7 +31,6 @@ import { useAuth } from "@/lib/useAuth";
 import {
   BENGALURU_AREAS,
   BENGALURU_AREA_COORDS,
-  nearestArea,
   SEVERITY_CONFIG,
   SEVERITY_ORDER,
   type Severity,
@@ -114,7 +113,6 @@ function ReportPage() {
 
   const handlePinChange = (lat: number, lng: number) => {
     setCoords({ lat, lng });
-    setArea(nearestArea(lat, lng));
   };
 
   const removeImage = (i: number) => {
@@ -132,7 +130,6 @@ function ReportPage() {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-        setArea(nearestArea(pos.coords.latitude, pos.coords.longitude));
         setLocating(false);
         toast.success("Location captured");
       },
