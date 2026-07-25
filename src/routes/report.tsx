@@ -31,7 +31,6 @@ import { useAuth } from "@/lib/useAuth";
 import {
   BENGALURU_AREAS,
   BENGALURU_AREA_COORDS,
-  nearestArea,
   SEVERITY_CONFIG,
   SEVERITY_ORDER,
   type Severity,
