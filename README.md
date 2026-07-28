@@ -160,17 +160,11 @@ Emergency reporting mode for extremely dangerous road conditions.
 
 The application should prioritize ease of reporting, transparency, accountability, and rapid pothole resolution while creating a crowdsourced road-maintenance ecosystem for Bengaluru.
 
-This project was built with [Lovable](https://lovable.dev).
 
-**Live app**: https://fixmybengaluru.lovable.app
 
-## Build with Lovable
+**Live app**: https://fixmybengaluru.com
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/8d2a0812-59c5-410a-b586-2e66019590bf).
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
