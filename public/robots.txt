@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://id-preview--8d2a0812-59c5-410a-b586-2e66019590bf.lovable.app/sitemap.xml
+Sitemap: https://fixmybengaluru.com/sitemap.xml
